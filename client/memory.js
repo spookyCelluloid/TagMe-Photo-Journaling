@@ -4,7 +4,9 @@ import {
   View,
   Text,
   AsyncStorage,
-  Image
+  Image,
+  CameraRoll,
+  TouchableOpacity
 } from 'react-native';
 import { Font } from 'exponent';
 import ModalView from './tagsModal';
@@ -22,7 +24,9 @@ export default class Memory extends React.Component {
       filteredTags: [],
       status: false,
       databaseId: '',
-      caption: ''
+      caption: '',
+      savePhoto: false,
+      savePhotoText: 'Save to Library'
     };
   }
 
@@ -138,6 +142,14 @@ export default class Memory extends React.Component {
     });
   }
 
+  async saveToCameraRoll() {
+    CameraRoll.saveToCameraRoll(this.state.image.uri);
+    this.setState({
+      savePhoto: true,
+      savePhotoText: 'Saved!'
+    });
+  }
+
   async updateTags(filteredTags) {
     this.setState({
       filteredTags: filteredTags
@@ -164,6 +176,7 @@ export default class Memory extends React.Component {
   }
 
   render() {
+    var disabled = false;
     var loading = this.state.status ?
       <ModalView
         prevScene={this.props.prevScene}
@@ -196,6 +209,13 @@ export default class Memory extends React.Component {
             status={this.state.status}
             tags={this.state.filteredTags}
           />
+          <TouchableOpacity
+            style={this.state.savePhoto ? styles.buttonDisabled : styles.button}
+            activeOpacity={0.3}
+            onPress={this.saveToCameraRoll.bind(this)}
+            disabled={this.state.savePhoto}>
+            <Text style={styles.buttonText}>{this.state.savePhotoText}</Text>
+          </TouchableOpacity>
           {loading}
         </Content>
       </Container>
@@ -268,11 +288,30 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    width: 325,
-    height: 325
+    width: 350,
+    height: 350
   },
 
   spinner: {
     padding: 100
+  },
+
+  button: {
+    margin: 10,
+    backgroundColor: '#f6755e',
+    padding: 10,
+    borderRadius: 4
+  },
+  buttonDisabled: {
+    margin: 10,
+    backgroundColor: '#f6755e',
+    padding: 10,
+    borderRadius: 4,
+    opacity: 0.3
+  },
+  buttonText: {
+    ...Font.style('montserrat'),
+    color: '#fff',
+    fontSize: 18
   }
 });

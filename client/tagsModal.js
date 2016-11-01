@@ -76,14 +76,14 @@ export default class ModalView extends React.Component {
         <Content style={styles.modal}>
           <View style={styles.modalContent}>
             <Button transparent onPress={this.setModalVisible.bind(this, false)}>
-              <Ionicons name="ios-close" size={40} color="#444" />
+              <Ionicons name="ios-close" size={60} color="#444" />
             </Button>
             <View><Text style={styles.modalText}>Select tags to save</Text></View>
             <View>
               <View style={styles.tagsContainer}>
               {
                 this.props.tags.map(tag =>
-                  <Tag 
+                  <Tag
                     name={tag}
                     addTag={this.addTag.bind(this)}
                     removeTag={this.removeTag.bind(this)}
@@ -127,9 +127,9 @@ class Tag extends Component {
 
   render() {
     return (
-      <Button 
-        bordered={!this.state.selected} 
-        rounded 
+      <Button
+        bordered={!this.state.selected}
+        rounded
         info
         onPress={this.selectTag.bind(this)}
         style={styles.tag}
