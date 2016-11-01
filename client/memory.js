@@ -22,8 +22,7 @@ export default class Memory extends React.Component {
       filteredTags: [],
       status: false,
       databaseId: '',
-      caption: '',
-      newKey: null
+      caption: ''
     };
   }
 
