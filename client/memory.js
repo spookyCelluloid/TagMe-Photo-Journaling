@@ -65,7 +65,7 @@ export default class Memory extends React.Component {
 
     var form = new FormData();
     form.append('memoryImage', photo);
-    fetch('https://invalid-memories-greenfield.herokuapp.com/api/memories/upload', 
+    fetch('https://invalid-memories-greenfield.herokuapp.com/api/memories/upload',
       {
         body: form,
         method: 'POST',
@@ -112,9 +112,9 @@ export default class Memory extends React.Component {
       var savedTags = memory.tags;
       var date = new Date(memory.createdAt).toString().slice(0, 15);
       context.setState({
-        tags: analyses, 
-        filteredTags: savedTags, 
-        status: true, 
+        tags: analyses,
+        filteredTags: savedTags,
+        status: true,
         databaseId: id,
         date: date,
         caption: caption
@@ -127,9 +127,9 @@ export default class Memory extends React.Component {
       } else {
         var date = new Date().toString().slice(0, 15);
         context.setState({
-          tags: [], 
-          filteredTags: [], 
-          status: true, 
+          tags: [],
+          filteredTags: [],
+          status: true,
           databaseId: id,
           date: date,
           caption: 'Request Timeout'
@@ -159,15 +159,15 @@ export default class Memory extends React.Component {
         tags: this.state.filteredTags
       })
     }).catch(function(err) {
-      
+
     })
   }
 
   render() {
-    var loading = this.state.status ? 
-      <ModalView 
-        prevScene={this.props.prevScene} 
-        tags={this.state.tags} 
+    var loading = this.state.status ?
+      <ModalView
+        prevScene={this.props.prevScene}
+        tags={this.state.tags}
         updateTags={this.updateTags.bind(this)}
         status={this.state.status}
       />
@@ -183,7 +183,7 @@ export default class Memory extends React.Component {
             <Ionicons name="ios-home" size={35} color="#444" />
           </Button>
         </Header>
-        <Content 
+        <Content
           contentContainerStyle={
             {
               justifyContent: 'center',
@@ -192,8 +192,8 @@ export default class Memory extends React.Component {
           }>
           <Image style={styles.image} resizeMode={Image.resizeMode.contain} source={{uri: this.state.image.uri}}/>
           <Text style={styles.caption}>{this.state.caption}</Text>
-          <MemoryDetails 
-            status={this.state.status} 
+          <MemoryDetails
+            status={this.state.status}
             tags={this.state.filteredTags}
           />
           {loading}
@@ -210,9 +210,9 @@ class MemoryDetails extends React.Component {
 
   render() {
     var loading = !this.props.status ?
-      <Spinner 
-        color='red' 
-        animating={true} 
+      <Spinner
+        color='red'
+        animating={true}
         size='large'
         style={styles.spinner}>
       </Spinner>
@@ -222,14 +222,11 @@ class MemoryDetails extends React.Component {
         <View style={styles.tagsContainer}>
           {
             this.props.tags.map(tag =>
-<<<<<<< 05c5775daee773d40874628d02a9e0b6d66d4f19
               <Button style={styles.tag} rounded info><Text style={styles.tagText}>{tag}</Text></Button>
-=======
-              <Button style={styles.tag} rounded info>{tag}</Button>
->>>>>>> Align center the tags on memory details scene as well as modal; make modal scrollable
             )
           }
         </View>
+        <Button>Save to library</Button>
         {loading}
       </View>
     );
@@ -272,8 +269,8 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    width: 325,
-    height: 325
+    width: 350,
+    height: 350
   },
 
   spinner: {
