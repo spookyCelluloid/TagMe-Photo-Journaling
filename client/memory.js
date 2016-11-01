@@ -222,7 +222,11 @@ class MemoryDetails extends React.Component {
         <View style={styles.tagsContainer}>
           {
             this.props.tags.map(tag =>
+<<<<<<< 05c5775daee773d40874628d02a9e0b6d66d4f19
               <Button style={styles.tag} rounded info><Text style={styles.tagText}>{tag}</Text></Button>
+=======
+              <Button style={styles.tag} rounded info>{tag}</Button>
+>>>>>>> Align center the tags on memory details scene as well as modal; make modal scrollable
             )
           }
         </View>
