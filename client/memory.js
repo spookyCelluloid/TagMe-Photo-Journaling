@@ -25,7 +25,8 @@ export default class Memory extends React.Component {
       status: false,
       databaseId: '',
       caption: '',
-      savePhoto: false
+      savePhoto: false,
+      savePhotoText: 'Save to Library'
     };
   }
 
@@ -143,7 +144,10 @@ export default class Memory extends React.Component {
 
   async saveToCameraRoll() {
     CameraRoll.saveToCameraRoll(this.state.image.uri);
-    this.setState({savePhoto: true});
+    this.setState({
+      savePhoto: true,
+      savePhotoText: 'Saved!'
+    });
   }
 
   async updateTags(filteredTags) {
@@ -205,8 +209,12 @@ export default class Memory extends React.Component {
             status={this.state.status}
             tags={this.state.filteredTags}
           />
-          <TouchableOpacity activeOpacity={0.3} onPress={this.saveToCameraRoll.bind(this)} disabled={this.state.savePhoto}>
-            <Text>Save to Library</Text>
+          <TouchableOpacity
+            style={this.state.savePhoto ? styles.buttonDisabled : styles.button}
+            activeOpacity={0.3}
+            onPress={this.saveToCameraRoll.bind(this)}
+            disabled={this.state.savePhoto}>
+            <Text style={styles.buttonText}>{this.state.savePhotoText}</Text>
           </TouchableOpacity>
           {loading}
         </Content>
@@ -286,5 +294,24 @@ const styles = StyleSheet.create({
 
   spinner: {
     padding: 100
+  },
+
+  button: {
+    margin: 10,
+    backgroundColor: '#f6755e',
+    padding: 10,
+    borderRadius: 4
+  },
+  buttonDisabled: {
+    margin: 10,
+    backgroundColor: '#f6755e',
+    padding: 10,
+    borderRadius: 4,
+    opacity: 0.3
+  },
+  buttonText: {
+    ...Font.style('montserrat'),
+    color: '#fff',
+    fontSize: 18
   }
 });
