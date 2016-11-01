@@ -109,7 +109,7 @@ export default class Homescreen extends React.Component {
                 <Button primary style={styles.takePhotoButton} onPress={this.takeImage.bind(this)}>
                   <View style={[styles.centered, styles.flexCol]}>
                     <Text style={[styles.buttonText, styles.takePhotoButtonText]}>Take Photo</Text>
-                    <Ionicons name="ios-camera-outline" size={40} color="white" />
+                    <Ionicons name="ios-camera-outline" size={60} color="white" />
                   </View>
                 </Button>
               </View>

@@ -39,7 +39,7 @@ export default class Login extends React.Component {
       }
     })
   }
-  
+
   async _onValueChange(item, selectedValue) {
     try {
       await AsyncStorage.setItem(item, selectedValue);
@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     height: 30,
-    borderColor: '#aaa', 
+    borderColor: '#aaa',
     borderRadius: 15,
     borderWidth: 1,
     paddingTop: 5,
