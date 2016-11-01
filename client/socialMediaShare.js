@@ -10,15 +10,32 @@ import {
   AlertIOS,
   Platform
 } from 'react-native';
+import { Font } from 'exponent';
 import Share, {ShareSheet, Button} from 'react-native-share';
 
 export default class TestShare extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      visible: false
+      visible: false,
+      fontLoaded: false
     }
   }
+
+  async componentDidMount() {
+    await Font.loadAsync({
+      'pacifico': require('./assets/fonts/Pacifico.ttf'),
+      'montserrat': require('./assets/fonts/Montserrat-Regular.ttf'),
+      'helvetica': require('./assets/fonts/HelveticaNeueMed.ttf')
+    });
+    this.setState({ fontLoaded: true });
+    if (this.props.prevScene === 'Homescreen') {
+      this.uploadPhoto();
+    } else {
+      this.getMemoryData(this.props.id, 0);
+    }
+  }
+
   onCancel() {
     console.log("CANCEL")
     this.setState({visible:false});
@@ -46,11 +63,13 @@ export default class TestShare extends Component {
     return (
       <View style={styles.container}>
 
-        <TouchableOpacity onPress={()=>{
-          Share.open(shareImageBase64);
-        }}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={()=>{
+            Share.open(shareImageBase64);
+          }}>
           <View style={styles.instructions}>
-            <Text>Share Photo!</Text>
+            <Text style={styles.buttonText}>Share Photo!</Text>
           </View>
         </TouchableOpacity>
 
@@ -130,15 +149,26 @@ export default class TestShare extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    // flex: 1,
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    // backgroundColor: '#F5FCFF',
   },
   instructions: {
-    marginTop: 20,
-    marginBottom: 20,
+    // marginTop: 20,
+    // marginBottom: 20,
   },
+  button: {
+    margin: 10,
+    backgroundColor: '#f6755e',
+    padding: 10,
+    borderRadius: 4
+  },
+  buttonText: {
+    ...Font.style('montserrat'),
+    color: '#fff',
+    fontSize: 18
+  }
 });
 
 //  twitter icon
