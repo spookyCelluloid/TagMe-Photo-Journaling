@@ -5,7 +5,8 @@ import {
   Text,
   AsyncStorage,
   Image,
-  CameraRoll
+  CameraRoll,
+  TouchableOpacity
 } from 'react-native';
 import { Font } from 'exponent';
 import ModalView from './tagsModal';
@@ -23,7 +24,8 @@ export default class Memory extends React.Component {
       filteredTags: [],
       status: false,
       databaseId: '',
-      caption: ''
+      caption: '',
+      savePhoto: false
     };
   }
 
@@ -139,9 +141,10 @@ export default class Memory extends React.Component {
     });
   }
 
-async saveToCameraRoll() {
-  CameraRoll.saveToCameraRoll(this.state.image.uri);
-}
+  async saveToCameraRoll() {
+    CameraRoll.saveToCameraRoll(this.state.image.uri);
+    this.setState({savePhoto: true});
+  }
 
   async updateTags(filteredTags) {
     this.setState({
@@ -169,6 +172,7 @@ async saveToCameraRoll() {
   }
 
   render() {
+    var disabled = false;
     var loading = this.state.status ?
       <ModalView
         prevScene={this.props.prevScene}
@@ -201,9 +205,9 @@ async saveToCameraRoll() {
             status={this.state.status}
             tags={this.state.filteredTags}
           />
-          <Button onPress={this.saveToCameraRoll.bind(this)}>
+          <TouchableOpacity activeOpacity={0.3} onPress={this.saveToCameraRoll.bind(this)} disabled={this.state.savePhoto}>
             <Text>Save to Library</Text>
-          </Button>
+          </TouchableOpacity>
           {loading}
         </Content>
       </Container>
