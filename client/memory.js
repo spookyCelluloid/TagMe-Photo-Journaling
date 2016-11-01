@@ -226,6 +226,7 @@ class MemoryDetails extends React.Component {
             )
           }
         </View>
+        <Button>Save to library</Button>
         {loading}
       </View>
     );
@@ -268,8 +269,8 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    width: 325,
-    height: 325
+    width: 350,
+    height: 350
   },
 
   spinner: {
