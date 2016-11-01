@@ -4,7 +4,8 @@ import {
   View,
   Text,
   AsyncStorage,
-  Image
+  Image,
+  CameraRoll
 } from 'react-native';
 import { Font } from 'exponent';
 import ModalView from './tagsModal';
@@ -138,6 +139,10 @@ export default class Memory extends React.Component {
     });
   }
 
+async saveToCameraRoll() {
+  CameraRoll.saveToCameraRoll(this.state.image.uri);
+}
+
   async updateTags(filteredTags) {
     this.setState({
       filteredTags: filteredTags
@@ -196,6 +201,9 @@ export default class Memory extends React.Component {
             status={this.state.status}
             tags={this.state.filteredTags}
           />
+          <Button onPress={this.saveToCameraRoll.bind(this)}>
+            <Text>Save to Library</Text>
+          </Button>
           {loading}
         </Content>
       </Container>
@@ -226,7 +234,6 @@ class MemoryDetails extends React.Component {
             )
           }
         </View>
-        <Button>Save to library</Button>
         {loading}
       </View>
     );
