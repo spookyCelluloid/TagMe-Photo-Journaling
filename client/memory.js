@@ -11,6 +11,7 @@ import ModalView from './tagsModal';
 import { Container, Header, Title, Content, Footer, Button, Spinner } from 'native-base';
 import { Ionicons } from '@exponent/vector-icons';
 
+
 var STORAGE_KEY = 'id_token';
 
 export default class Memory extends React.Component {
@@ -22,7 +23,7 @@ export default class Memory extends React.Component {
       filteredTags: [],
       status: false,
       databaseId: '',
-      caption: ''
+      caption: '',
     };
   }
 
@@ -47,6 +48,7 @@ export default class Memory extends React.Component {
     } else {
       this.getMemoryData(this.props.id, 0);
     }
+
   }
 
   async uploadPhoto() {
@@ -163,6 +165,8 @@ export default class Memory extends React.Component {
     })
   }
 
+
+
   render() {
     var loading = this.state.status ? 
       <ModalView 
@@ -195,6 +199,7 @@ export default class Memory extends React.Component {
           <MemoryDetails 
             status={this.state.status} 
             tags={this.state.filteredTags}
+            location={this.state.location}
           />
           {loading}
         </Content>
