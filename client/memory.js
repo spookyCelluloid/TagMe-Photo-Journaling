@@ -86,6 +86,7 @@ export default class Memory extends React.Component {
   }
 
   async getMemoryData(id, pings) {
+    console.log('called');
     var context = this;
     try {
       var token =  await AsyncStorage.getItem(STORAGE_KEY);
@@ -188,7 +189,7 @@ export default class Memory extends React.Component {
       />
       : null;
     return (
-      <Container>
+      <Container style={ {backgroundColor: 'white'} }>
         <Header>
           <Button transparent onPress={() => this.props.navigator.pop()}>
             <Ionicons name="ios-arrow-back" size={32} style={{color: '#25a2c3', marginTop: 5}}/>
@@ -216,7 +217,9 @@ export default class Memory extends React.Component {
             activeOpacity={0.3}
             onPress={this.saveToCameraRoll.bind(this)}
             disabled={this.state.savePhoto}>
-            <Text style={styles.buttonText}>{this.state.savePhotoText}</Text>
+            <Text style={styles.buttonText}>
+              {this.state.savePhotoText}  <Ionicons name="ios-download-outline" size={18} color="white" />
+            </Text>
           </TouchableOpacity>
           <SocialMediaShare Image={this.state}/>
           {loading}
@@ -245,7 +248,12 @@ class MemoryDetails extends React.Component {
         <View style={styles.tagsContainer}>
           {
             this.props.tags.map(tag =>
-              <Button style={styles.tag} rounded info><Text style={styles.tagText}>{tag}</Text></Button>
+              <Button
+                key={tag}
+                style={styles.tag}
+                rounded info>
+                <Text style={styles.tagText}>{tag}</Text>
+              </Button>
             )
           }
         </View>
@@ -300,6 +308,7 @@ const styles = StyleSheet.create({
   },
 
   button: {
+    width: 200,
     margin: 10,
     backgroundColor: '#f6755e',
     padding: 10,
@@ -315,6 +324,7 @@ const styles = StyleSheet.create({
   buttonText: {
     ...Font.style('montserrat'),
     color: '#fff',
-    fontSize: 18
+    fontSize: 18,
+    textAlign: 'center'
   }
 });
