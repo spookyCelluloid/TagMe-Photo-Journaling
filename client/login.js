@@ -135,11 +135,7 @@ export default class Login extends React.Component {
               <View style={styles.title}>
                 <Text style={styles.titleText}>TagMe</Text>
               </View>
-              <View style={styles.subtitle}>
-                <Text style={styles.subtitleText}>photo</Text>
-                <Text style={styles.subtitleText}>tagging</Text>
-                <Text style={styles.subtitleText}>power</Text>
-              </View>
+
             </View>
             ) : null
           }
