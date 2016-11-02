@@ -9,7 +9,7 @@ var _ = require('lodash');
 
 // techdebt: break upload into several functions to make it readable
 exports.upload = function(req, res) {
-  console.log('POST /api/memories/upload. username:', req.user.username);
+  console.log('POST /api/memories/upload. username:', req.user.username, 'request.file:', req.file, 'request.body:', req.body);
   if (!req.file) {
     console.log('Multer failed to save file');
     res.status(404).send();
@@ -28,8 +28,7 @@ exports.upload = function(req, res) {
             title: req.file.filename,
             filePath: image.url, 
             createdAt: Date.now(),
-            latitude:
-            longitute: 
+            
           }).then(function(memory) {
 
             fs.unlink('uploads/' + req.file.filename, function(err, success) {
