@@ -40,13 +40,15 @@ export default class Homescreen extends React.Component {
     }
   }
 
-  _navigate(sceneName, imageUri) {
+  _navigate(sceneName, imageUri, location) {
     this.props.navigator.push({
       name: sceneName,
       passProps: {
         'image': {uri: imageUri},
         'username': this.props.username,
-        'prevScene': 'Homescreen'
+        'prevScene': 'Homescreen',
+        'longitude': location ? location.longitude : undefined,
+        'latitude': location ? location.latitude : undefined
       }
     });
   }
@@ -84,7 +86,15 @@ export default class Homescreen extends React.Component {
     };
     newImage().then((image) => {
       if (!image.cancelled) {
-        this._navigate('Memory', image.uri);
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            var initialPosition = JSON.stringify(position);
+            var location = {longitude: position.coords.longitude, latitude: position.coords.latitude}
+            this._navigate('Memory', image.uri, location);
+          },
+          (error) => alert(JSON.stringify(error)),
+          {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+        );
       }
     });
   }

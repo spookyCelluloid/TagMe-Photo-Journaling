@@ -27,7 +27,9 @@ export default class Memory extends React.Component {
       databaseId: '',
       caption: '',
       savePhoto: false,
-      savePhotoText: 'Save to Library'
+      savePhotoText: 'Save to Library',
+      longitude: this.props.longitude,
+      latitude: this.props.latitude
     };
   }
 
@@ -206,6 +208,8 @@ export default class Memory extends React.Component {
             }
           }>
           <Image style={styles.image} resizeMode={Image.resizeMode.contain} source={{uri: this.state.image.uri}}/>
+          <Text>Longitude: {this.state.longitude}</Text>
+          <Text>Latitude: {this.state.latitude}</Text>
           <Text style={styles.caption}>{this.state.caption}</Text>
           <MemoryDetails
             status={this.state.status}
