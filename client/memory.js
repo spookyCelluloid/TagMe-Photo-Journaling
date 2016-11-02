@@ -78,7 +78,7 @@ export default class Memory extends React.Component {
 
     var form = new FormData();
     form.append('memoryImage', photo);
-    fetch('https://invalid-memories-greenfield.herokuapp.com/api/memories/upload',
+    fetch('https://spooky-tagme.herokuapp.com/api/memories/upload',
       {
         body: form,
         method: 'POST',
@@ -101,7 +101,7 @@ export default class Memory extends React.Component {
       console.log('AsyncStorage error: ' + error.message);
     }
 
-    fetch('https://invalid-memories-greenfield.herokuapp.com/api/memories/id/' + id, {
+    fetch('https://spooky-tagme.herokuapp.com/api/memories/id/' + id, {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + token
@@ -171,7 +171,7 @@ export default class Memory extends React.Component {
       console.log('AsyncStorage error: ' + error.message);
     }
 
-    fetch('https://invalid-memories-greenfield.herokuapp.com/api/memories/id/' + this.state.databaseId, {
+    fetch('https://spooky-tagme.herokuapp.com/api/memories/id/' + this.state.databaseId, {
       method: 'POST',
       headers: {
         'Authorization': 'Bearer ' + token,
