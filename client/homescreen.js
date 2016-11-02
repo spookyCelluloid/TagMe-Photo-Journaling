@@ -103,8 +103,8 @@ export default class Homescreen extends React.Component {
           <Button transparent><Text style={styles.buttonText}> </Text></Button>
           <Title style={styles.headerText}>TagMe</Title>
           <Button transparent onPress={this.logout.bind(this)}>
-            <Ionicons name="ios-log-out" size={35} color="#444" />
-          </Button>
+            <Image source={require('./assets/images/logoutTextIcon.png')} style={styles.logoutTextIcon} resizeMode={Image.resizeMode.contain}/>
+            </Button>
         </Header>
         <View style={styles.container}>
           {
@@ -208,5 +208,12 @@ const styles = StyleSheet.create({
   takePhotoButtonText: {
     fontSize: 27,
     paddingTop: 20
+  },
+
+  logoutTextIcon: {
+    paddingLeft: 550,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });
