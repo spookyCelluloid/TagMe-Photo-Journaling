@@ -65,7 +65,9 @@ export default class ModalView extends React.Component {
     return (
       <View>
         <Button onPress={this.setModalVisible.bind(this, true)} style={styles.button}>
-          <Text style={styles.buttonText}>Edit Tags</Text>
+          <Text style={styles.buttonText}>
+            Edit Tags  <Ionicons name="ios-pricetags-outline" size={18} color="white" />
+          </Text>
         </Button>
         <Modal
           animationType={'slide'}
@@ -84,6 +86,7 @@ export default class ModalView extends React.Component {
               {
                 this.props.tags.map(tag =>
                   <Tag
+                    key={tag}
                     name={tag}
                     addTag={this.addTag.bind(this)}
                     removeTag={this.removeTag.bind(this)}
