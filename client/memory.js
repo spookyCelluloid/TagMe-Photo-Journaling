@@ -50,7 +50,6 @@ export default class Memory extends React.Component {
     if (this.props.prevScene === 'Homescreen') {
       this.uploadPhoto();
     } else {
-      console.log('component mounted again');
       this.getMemoryData(this.props.id, 0);
     }
   }
@@ -86,7 +85,7 @@ export default class Memory extends React.Component {
   }
 
   async getMemoryData(id, pings) {
-    console.log('called');
+    console.log('getMemoryData is called');
     var context = this;
     try {
       var token =  await AsyncStorage.getItem(STORAGE_KEY);
