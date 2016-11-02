@@ -127,7 +127,7 @@ export default class Memories extends React.Component {
         }
         <View style={{flexDirection: 'row', margin: 10}}>
           <InputGroup borderType='rounded' style={{width: 250}}>
-              <Input 
+              <Input
                 placeholder='Search'
                 onChangeText={(text) => this.setState({searchQuery: text})}
                 value={this.state.searchQuery}
@@ -138,7 +138,7 @@ export default class Memories extends React.Component {
           </Button>
           {
               this.state.searching ? (
-                <Button rounded bordered style={{borderColor: '#ccc', marginLeft: 5}} 
+                <Button rounded bordered style={{borderColor: '#ccc', marginLeft: 5}}
                         onPress={this.fetchMemories.bind(this)}>
                   <Text style={{color: '#444'}}>Cancel</Text>
                 </Button>
@@ -148,21 +148,20 @@ export default class Memories extends React.Component {
         <Content contentContainerStyle={{
           flexWrap: 'wrap',
           flexDirection: 'row',
-          justifyContent: 'center',
           alignItems: 'center'
         }}>
           {
             this.state.searching ? (
-              this.state.queryList.map(image => 
+              this.state.queryList.map(image =>
                 <TouchableHighlight onPress={this._navigate.bind(this, image)}>
-                  <Image style={styles.thumbnail} resizeMode={Image.resizeMode.contain} source={{uri: image.uri}}/>
+                  <Image style={styles.thumbnail} resizeMode={Image.resizeMode.cover} source={{uri: image.uri}}/>
                 </TouchableHighlight>
               )
             )
             :
-            this.state.imageList.map(image => 
+            this.state.imageList.map(image =>
               <TouchableHighlight onPress={this._navigate.bind(this, image)}>
-                <Image style={styles.thumbnail} resizeMode={Image.resizeMode.contain} source={{uri: image.uri}}/>
+                <Image style={styles.thumbnail} resizeMode={Image.resizeMode.cover} source={{uri: image.uri}}/>
               </TouchableHighlight>
             )
           }
@@ -212,4 +211,4 @@ const styles = StyleSheet.create({
         </Header>
         */
 
-       
+
