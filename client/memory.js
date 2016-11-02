@@ -50,6 +50,7 @@ export default class Memory extends React.Component {
     if (this.props.prevScene === 'Homescreen') {
       this.uploadPhoto();
     } else {
+      console.log('component mounted again');
       this.getMemoryData(this.props.id, 0);
     }
   }
