@@ -42,15 +42,24 @@ export default class Homescreen extends React.Component {
     }
   }
 
+<<<<<<< HEAD
   _navigate(sceneName, imageUri, position) {
     console.log('POSITION', position)
+=======
+  _navigate(sceneName, imageUri, location) {
+>>>>>>> 258fa6006ce2c11249ae539f06b77e122b77d193
     this.props.navigator.push({
       name: sceneName,
       passProps: {
         'image': {uri: imageUri},
         'username': this.props.username,
         'prevScene': 'Homescreen',
+<<<<<<< HEAD
         'initialPosition': position
+=======
+        'longitude': location ? location.longitude : undefined,
+        'latitude': location ? location.latitude : undefined
+>>>>>>> 258fa6006ce2c11249ae539f06b77e122b77d193
       }
     });
   }
@@ -93,18 +102,16 @@ export default class Homescreen extends React.Component {
     };
     newImage().then((image) => {
       if (!image.cancelled) {
-        var Location = async function() {
-          navigator.geolocation.getCurrentPosition(
-              (position) => {
-                var initialPosition = JSON.stringify(position);
-                return initialPosition;
-              }
-            )};
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            var initialPosition = JSON.stringify(position);
+            var location = {longitude: position.coords.longitude, latitude: position.coords.latitude}
+            this._navigate('Memory', image.uri, location);
+          },
+          (error) => alert(JSON.stringify(error)),
+          {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+        );
 
-          Location().then((location)=> console.log(location))
-
-              
-       
       }
        this._navigate('Memory', image.uri, this.state.initialPosition);
     });
@@ -124,8 +131,8 @@ export default class Homescreen extends React.Component {
           <Button transparent><Text style={styles.buttonText}> </Text></Button>
           <Title style={styles.headerText}>TagMe</Title>
           <Button transparent onPress={this.logout.bind(this)}>
-            <Ionicons name="ios-log-out" size={35} color="#444" />
-          </Button>
+            <Image source={require('./assets/images/logoutTextIcon.png')} style={styles.logoutTextIcon} resizeMode={Image.resizeMode.contain}/>
+            </Button>
         </Header>
         <View style={styles.container}>
           {
@@ -229,5 +236,12 @@ const styles = StyleSheet.create({
   takePhotoButtonText: {
     fontSize: 27,
     paddingTop: 20
+  },
+
+  logoutTextIcon: {
+    paddingLeft: 550,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });

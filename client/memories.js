@@ -111,17 +111,17 @@ export default class Memories extends React.Component {
 
   render() {
     return (
-      <Container>
+      <Container style={ {backgroundColor: 'white'} }>
         {
           this.state.fontLoaded ? (
         <Header>
           <Button transparent onPress={() => this.props.navigator.pop()}>
             <Ionicons name="ios-arrow-back" size={32} style={{color: '#25a2c3', marginTop: 5}}/>
           </Button>
-          <Title style={styles.headerText}>{this.props.username}'s Memories</Title>
           <Button transparent onPress={this._navigateHome.bind(this)}>
-              <Ionicons name="ios-home" size={35} color="#444" />
+            <Ionicons name="ios-home" size={35} color="#444" />
           </Button>
+          <Title style={styles.headerText}>{this.props.username}</Title>
         </Header>
           ) : null
         }
@@ -160,7 +160,7 @@ export default class Memories extends React.Component {
             )
             :
             this.state.imageList.map(image =>
-              <TouchableHighlight onPress={this._navigate.bind(this, image)}>
+              <TouchableHighlight key={image.id} onPress={this._navigate.bind(this, image)}>
                 <Image style={styles.thumbnail} resizeMode={Image.resizeMode.cover} source={{uri: image.uri}}/>
               </TouchableHighlight>
             )
@@ -183,6 +183,11 @@ const styles = StyleSheet.create({
     width: 90,
     height: 90,
     margin: 1
+  },
+
+  Button: {
+    backgroundColor: 'white',
+    borderWidth: 2
   }
 });
 
@@ -210,5 +215,3 @@ const styles = StyleSheet.create({
           </Button>
         </Header>
         */
-
-
