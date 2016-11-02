@@ -27,7 +27,9 @@ exports.upload = function(req, res) {
           Memory.create({
             title: req.file.filename,
             filePath: image.url, 
-            createdAt: Date.now()
+            createdAt: Date.now(),
+            latitude:
+            longitute: 
           }).then(function(memory) {
 
             fs.unlink('uploads/' + req.file.filename, function(err, success) {

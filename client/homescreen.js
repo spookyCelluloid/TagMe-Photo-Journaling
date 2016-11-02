@@ -42,24 +42,16 @@ export default class Homescreen extends React.Component {
     }
   }
 
-<<<<<<< HEAD
-  _navigate(sceneName, imageUri, position) {
-    console.log('POSITION', position)
-=======
+
   _navigate(sceneName, imageUri, location) {
->>>>>>> 258fa6006ce2c11249ae539f06b77e122b77d193
     this.props.navigator.push({
       name: sceneName,
       passProps: {
         'image': {uri: imageUri},
         'username': this.props.username,
         'prevScene': 'Homescreen',
-<<<<<<< HEAD
-        'initialPosition': position
-=======
         'longitude': location ? location.longitude : undefined,
         'latitude': location ? location.latitude : undefined
->>>>>>> 258fa6006ce2c11249ae539f06b77e122b77d193
       }
     });
   }

@@ -67,7 +67,9 @@ export default class Memory extends React.Component {
     var photo = {
       uri: this.state.image.uri,
       type: 'image/jpeg',
-      name: 'image.jpg'
+      name: 'image.jpg',
+      latitude: this.state.longitute,
+      longitude:this.state.latitude
     };
 
     try {
