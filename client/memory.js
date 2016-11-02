@@ -14,11 +14,14 @@ import SocialMediaShare from './socialMediaShare';
 import { Container, Header, Title, Content, Footer, Button, Spinner } from 'native-base';
 import { Ionicons } from '@exponent/vector-icons';
 
+
 var STORAGE_KEY = 'id_token';
 
 export default class Memory extends React.Component {
   constructor(props) {
     super(props);
+
+    
     this.state = {
       image: this.props.image,
       tags: [],
@@ -30,7 +33,9 @@ export default class Memory extends React.Component {
       savePhotoText: 'Save to Library',
       longitude: this.props.longitude,
       latitude: this.props.latitude
+
     };
+    console.log('IN MEMORY PROPS', props)
   }
 
    _navigate() {
@@ -54,6 +59,7 @@ export default class Memory extends React.Component {
     } else {
       this.getMemoryData(this.props.id, 0);
     }
+
   }
 
   async uploadPhoto() {
@@ -61,7 +67,9 @@ export default class Memory extends React.Component {
     var photo = {
       uri: this.state.image.uri,
       type: 'image/jpeg',
-      name: 'image.jpg'
+      name: 'image.jpg',
+      latitude: this.state.longitute,
+      longitude:this.state.latitude
     };
 
     try {
@@ -179,6 +187,8 @@ export default class Memory extends React.Component {
     })
   }
 
+
+
   render() {
     var disabled = false;
     var loading = this.state.status ?
@@ -214,6 +224,7 @@ export default class Memory extends React.Component {
           <MemoryDetails
             status={this.state.status}
             tags={this.state.filteredTags}
+            location={this.state.location}
           />
           <TouchableOpacity
             style={this.state.savePhoto ? styles.buttonDisabled : styles.button}

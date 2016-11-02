@@ -6,7 +6,9 @@ var memorySchema = new Schema({
   filePath: String,
   createdAt: Date,
   analyses: [],
-  tags: []
+  tags: [],
+  latitude: Number,
+  longitude: Number
 });
 
 module.exports = mongoose.model('Memory', memorySchema);

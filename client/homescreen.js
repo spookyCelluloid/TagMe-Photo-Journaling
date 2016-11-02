@@ -19,7 +19,9 @@ export default class Homescreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      fontLoaded: false
+      fontLoaded: false,
+      initialPosition: null
+      
     }
   }
 
@@ -39,6 +41,7 @@ export default class Homescreen extends React.Component {
       console.log('AsyncStorage error: ' + error.message);
     }
   }
+
 
   _navigate(sceneName, imageUri, location) {
     this.props.navigator.push({
@@ -80,6 +83,11 @@ export default class Homescreen extends React.Component {
     });
   }
 
+  componentWillUnmount() {
+    navigator.geolocation.clearWatch(this.watchID);
+  }
+
+
   takeImage() {
     var newImage = async function() {
       return Exponent.ImagePicker.launchCameraAsync({});
@@ -95,7 +103,9 @@ export default class Homescreen extends React.Component {
           (error) => alert(JSON.stringify(error)),
           {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
         );
+
       }
+       this._navigate('Memory', image.uri, this.state.initialPosition);
     });
   }
 
