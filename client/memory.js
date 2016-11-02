@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { Font } from 'exponent';
 import ModalView from './tagsModal';
+import SocialMediaShare from './socialMediaShare';
 import { Container, Header, Title, Content, Footer, Button, Spinner } from 'native-base';
 import { Ionicons } from '@exponent/vector-icons';
 
@@ -54,6 +55,7 @@ export default class Memory extends React.Component {
     if (this.props.prevScene === 'Homescreen') {
       this.uploadPhoto();
     } else {
+      console.log('component mounted again');
       this.getMemoryData(this.props.id, 0);
     }
 
@@ -225,6 +227,7 @@ export default class Memory extends React.Component {
             disabled={this.state.savePhoto}>
             <Text style={styles.buttonText}>{this.state.savePhotoText}</Text>
           </TouchableOpacity>
+          <SocialMediaShare Image={this.state}/>
           {loading}
         </Content>
       </Container>

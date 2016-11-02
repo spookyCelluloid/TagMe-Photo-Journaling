@@ -13,8 +13,9 @@
     "native-base": "^0.5.11",
     "react": "~15.3.2",
     "react-native": "github:exponentjs/react-native#sdk-10.1.2",
-    "react-native-button": "^1.7.1"
-    
+    "react-native-button": "^1.7.1",
+    "react-native-share": "^1.0.16"
+
   },
   "devDependencies": {
     "jest-exponent": "^0.1.0",

@@ -6,7 +6,8 @@ import {
   View,
   Image,
   AlertIOS,
-  AsyncStorage
+  AsyncStorage,
+  StatusBar
 } from 'react-native';
 import { Font } from 'exponent';
 import { Container, Header, Title, Content, Footer, Button } from 'native-base';
@@ -119,6 +120,10 @@ export default class Homescreen extends React.Component {
   render() {
     return (
       <Container>
+        <View>
+          <StatusBar
+            backgroundColor='black'/>
+        </View>
         <View style={styles.backgroundImageWrapper}>
           <Image source={require('./assets/images/city.jpg')} style={styles.backgroundImage} />
         </View>

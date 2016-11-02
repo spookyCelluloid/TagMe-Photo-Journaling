@@ -5,7 +5,8 @@ import {
   View,
   Image,
   AlertIOS,
-  AsyncStorage
+  AsyncStorage,
+  StatusBar
 } from 'react-native';
 import { Font } from 'exponent';
 import { Container, Header, Title, Content, Footer, Button, List, ListItem, Input, InputGroup } from 'native-base';
@@ -120,6 +121,10 @@ export default class Login extends React.Component {
   render() {
     return (
       <Container>
+        <View>
+          <StatusBar
+            backgroundColor='black'/>
+        </View>
         <View style={styles.backgroundImageWrapper}>
           <Image source={require('./assets/images/london.jpg')} style={styles.backgroundImage} />
         </View>
@@ -130,11 +135,7 @@ export default class Login extends React.Component {
               <View style={styles.title}>
                 <Text style={styles.titleText}>TagMe</Text>
               </View>
-              <View style={styles.subtitle}>
-                <Text style={styles.subtitleText}>photo</Text>
-                <Text style={styles.subtitleText}>tagging</Text>
-                <Text style={styles.subtitleText}>power</Text>
-              </View>
+
             </View>
             ) : null
           }
