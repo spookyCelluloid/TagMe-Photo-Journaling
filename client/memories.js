@@ -5,7 +5,9 @@ import {
   View,
   Text,
   TouchableHighlight,
-  Image
+  CameraRoll,
+  Image,
+  ScrollView
 } from 'react-native';
 import { Font } from 'exponent';
 import { Container, Header, Title, Content, Footer, InputGroup, Input, Button } from 'native-base';
@@ -32,6 +34,13 @@ export default class Memories extends React.Component {
     });
     this.setState({ fontLoaded: true });
     this.fetchMemories();
+  }
+
+  async saveToCameraRoll() {
+    console.log('this in saveAll', this.state.imageList);
+    this.state.imageList.map( memory => (
+      CameraRoll.saveToCameraRoll(memory.uri)
+    ))
   }
 
   _navigate(image) {
@@ -112,60 +121,67 @@ export default class Memories extends React.Component {
   render() {
     return (
       <Container style={ {backgroundColor: 'white'} }>
-        {
-          this.state.fontLoaded ? (
-        <Header>
-          <Button transparent onPress={() => this.props.navigator.pop()}>
-            <Ionicons name="ios-arrow-back" size={32} style={{color: '#25a2c3', marginTop: 5}}/>
-          </Button>
-          <Button transparent onPress={this._navigateHome.bind(this)}>
-            <Ionicons name="ios-home" size={35} color="#444" />
-          </Button>
-          <Title style={styles.headerText}>{this.props.username}</Title>
-        </Header>
-          ) : null
-        }
-        <View style={{flexDirection: 'row', margin: 10}}>
-          <InputGroup borderType='rounded' style={{width: 250}}>
-              <Input
-                placeholder='Search'
-                onChangeText={(text) => this.setState({searchQuery: text})}
-                value={this.state.searchQuery}
-              />
-          </InputGroup>
-          <Button rounded style={{backgroundColor: '#25a2c3', marginLeft: 5}} onPress={this.search.bind(this)}>
-            <Ionicons name='ios-search' size={25} color="#fff"/>
-          </Button>
+        {/* <View> */}
           {
-              this.state.searching ? (
-                <Button rounded bordered style={{borderColor: '#ccc', marginLeft: 5}}
-                        onPress={this.fetchMemories.bind(this)}>
-                  <Text style={{color: '#444'}}>Cancel</Text>
-                </Button>
+            this.state.fontLoaded ? (
+          <Header>
+            <Button transparent onPress={() => this.props.navigator.pop()}>
+              <Ionicons name="ios-arrow-back" size={32} style={{color: '#25a2c3', marginTop: 5}}/>
+            </Button>
+            <Button transparent onPress={this._navigateHome.bind(this)}>
+              <Ionicons name="ios-home" size={35} color="#444" />
+            </Button>
+            <Title style={styles.headerText}>{this.props.username}</Title>
+          </Header>
             ) : null
           }
+          <View style={{flexDirection: 'row', margin: 10}}>
+            <InputGroup borderType='rounded' style={{width: 250}}>
+                <Input
+                  placeholder='Search'
+                  onChangeText={(text) => this.setState({searchQuery: text})}
+                  value={this.state.searchQuery}
+                />
+            </InputGroup>
+            <Button rounded style={{backgroundColor: '#25a2c3', marginLeft: 5}} onPress={this.search.bind(this)}>
+              <Ionicons name='ios-search' size={25} color="#fff"/>
+            </Button>
+            {
+                this.state.searching ? (
+                  <Button rounded bordered style={{borderColor: '#ccc', marginLeft: 5}}
+                          onPress={this.fetchMemories.bind(this)}>
+                    <Text style={{color: '#444'}}>Cancel</Text>
+                  </Button>
+              ) : null
+            }
+          </View>
+          {/* <ScrollView style={{flex: 1}}> */}
+            <Content contentContainerStyle={{
+              flexWrap: 'wrap',
+              flexDirection: 'row',
+              alignItems: 'center'
+            }}>
+              {
+                this.state.searching ? (
+                  this.state.queryList.map(image =>
+                    <TouchableHighlight onPress={this._navigate.bind(this, image)}>
+                      <Image style={styles.thumbnail} resizeMode={Image.resizeMode.cover} source={{uri: image.uri}}/>
+                    </TouchableHighlight>
+                  )
+                )
+                :
+                this.state.imageList.map(image =>
+                  <TouchableHighlight key={image.id} onPress={this._navigate.bind(this, image)}>
+                    <Image style={styles.thumbnail} resizeMode={Image.resizeMode.cover} source={{uri: image.uri}}/>
+                  </TouchableHighlight>
+                )
+              }
+            </Content>
+          {/* </ScrollView> */}
+        {/* </View> */}
+        <View>
+          <Button style={styles.saveAll} onPress={this.saveToCameraRoll.bind(this)}><Text style={styles.buttonText}>Save all memories</Text></Button>
         </View>
-        <Content contentContainerStyle={{
-          flexWrap: 'wrap',
-          flexDirection: 'row',
-          alignItems: 'center'
-        }}>
-          {
-            this.state.searching ? (
-              this.state.queryList.map(image =>
-                <TouchableHighlight onPress={this._navigate.bind(this, image)}>
-                  <Image style={styles.thumbnail} resizeMode={Image.resizeMode.cover} source={{uri: image.uri}}/>
-                </TouchableHighlight>
-              )
-            )
-            :
-            this.state.imageList.map(image =>
-              <TouchableHighlight key={image.id} onPress={this._navigate.bind(this, image)}>
-                <Image style={styles.thumbnail} resizeMode={Image.resizeMode.cover} source={{uri: image.uri}}/>
-              </TouchableHighlight>
-            )
-          }
-        </Content>
       </Container>
     );
   }
@@ -179,39 +195,27 @@ const styles = StyleSheet.create({
     paddingTop: 25
   },
 
+  saveAll: {
+    width: 200,
+    marginLeft: 2,
+    backgroundColor: '#f6755e',
+    padding: 10,
+    borderRadius: 4,
+    position: 'absolute',
+    bottom: 2,
+    left: 0
+  },
+
   thumbnail: {
     width: 90,
     height: 90,
     margin: 1
   },
 
-  Button: {
-    backgroundColor: 'white',
-    borderWidth: 2
+  buttonText: {
+    ...Font.style('montserrat'),
+    color: '#fff',
+    fontSize: 18,
+    textAlign: 'center'
   }
 });
-
-/*
-
-<Header searchBar rounded>
-           <InputGroup>
-               <Ionicons name='ios-search' />
-               <Input placeholder='Search' />
-               <Ionicons name='ios-people' />
-           </InputGroup>
-           <Button transparent>
-               Search
-           </Button>
-       </Header>
-
-
-<Header>
-          <Button transparent onPress={() => this.props.navigator.pop()}>
-            <Ionicons name="ios-arrow-back" size={32} style={{color: '#25a2c3', marginTop: 5}}/>
-          </Button>
-          <Title style={styles.headerText}>{this.props.username}'s Memories</Title>
-          <Button transparent onPress={this._navigateHome.bind(this)}>
-            <Ionicons name="ios-home" size={35} color="#444" />
-          </Button>
-        </Header>
-        */
