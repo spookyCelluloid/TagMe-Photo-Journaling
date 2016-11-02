@@ -3,7 +3,7 @@ var Upload = require('s3-uploader');
 module.exports = new Upload('spookycelluloid', {
   aws: {
     path: 'images/',
-    region: 'us-west-2',
+    region: 'us-west-1',
     acl: 'public-read'
   },
 
