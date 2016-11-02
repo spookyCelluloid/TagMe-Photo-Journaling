@@ -18,7 +18,9 @@ export default class Homescreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      fontLoaded: false
+      fontLoaded: false,
+      initialPosition: 'unknown'
+      
     }
   }
 
@@ -39,13 +41,15 @@ export default class Homescreen extends React.Component {
     }
   }
 
-  _navigate(sceneName, imageUri) {
+  _navigate(sceneName, imageUri, position) {
+    console.log('POSITION', position)
     this.props.navigator.push({
       name: sceneName,
       passProps: {
         'image': {uri: imageUri},
         'username': this.props.username,
-        'prevScene': 'Homescreen'
+        'prevScene': 'Homescreen',
+        'initialPosition': position
       }
     });
   }
@@ -72,18 +76,42 @@ export default class Homescreen extends React.Component {
     };
     oneImage().then((image)=> {
       if (!image.cancelled) {
+        this.getLocation();
         this._navigate('Memory', image.uri);
       }
     });
   }
 
+  watchID: ?number = null;
+
+  getLocation() {
+    return getLocationAsync() {
+      const { Location, Permissions } = Exponent;
+      const { status } = await Permissions.askAsync(Permissions.LOCATION);
+
+      if (status === 'granted') {
+
+        console.log(Location.getCurrentPositionAsync({enableHighAccuracy: true}));
+      } else {
+        throw new Error('Location permission not granted');
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    navigator.geolocation.clearWatch(this.watchID);
+  }
+
+
+
   takeImage() {
+    getLocation();
     var newImage = async function() {
       return Exponent.ImagePicker.launchCameraAsync({});
     };
     newImage().then((image) => {
       if (!image.cancelled) {
-        this._navigate('Memory', image.uri);
+        this._navigate('Memory', image.uri, this.state.initialPosition);
       }
     });
   }

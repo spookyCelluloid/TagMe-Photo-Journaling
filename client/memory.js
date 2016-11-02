@@ -19,6 +19,8 @@ var STORAGE_KEY = 'id_token';
 export default class Memory extends React.Component {
   constructor(props) {
     super(props);
+
+    
     this.state = {
       image: this.props.image,
       tags: [],
@@ -28,7 +30,9 @@ export default class Memory extends React.Component {
       caption: '',
       savePhoto: false,
       savePhotoText: 'Save to Library'
+      
     };
+    console.log('IN MEMORY PROPS', props)
   }
 
    _navigate() {
