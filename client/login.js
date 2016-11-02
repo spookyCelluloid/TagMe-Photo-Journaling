@@ -54,7 +54,7 @@ export default class Login extends React.Component {
     var context = this;
 
     if (this.state.username && this.state.password) {
-      fetch('https://invalid-memories-greenfield.herokuapp.com/api/users/login', {
+      fetch('https://spooky-tagme.herokuapp.com/api/users/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -86,7 +86,7 @@ export default class Login extends React.Component {
     var context = this;
 
     if (this.state.username && this.state.password) {
-      fetch('https://invalid-memories-greenfield.herokuapp.com/api/users/signup', {
+      fetch('https://spooky-tagme.herokuapp.com/api/users/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
