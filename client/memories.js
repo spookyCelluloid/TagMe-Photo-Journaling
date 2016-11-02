@@ -111,7 +111,7 @@ export default class Memories extends React.Component {
 
   render() {
     return (
-      <Container>
+      <Container style={ {backgroundColor: 'white'} }>
         {
           this.state.fontLoaded ? (
         <Header>
@@ -160,7 +160,7 @@ export default class Memories extends React.Component {
             )
             :
             this.state.imageList.map(image =>
-              <TouchableHighlight onPress={this._navigate.bind(this, image)}>
+              <TouchableHighlight key={image.id} onPress={this._navigate.bind(this, image)}>
                 <Image style={styles.thumbnail} resizeMode={Image.resizeMode.cover} source={{uri: image.uri}}/>
               </TouchableHighlight>
             )
