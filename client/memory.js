@@ -21,7 +21,7 @@ export default class Memory extends React.Component {
   constructor(props) {
     super(props);
 
-    
+
     this.state = {
       image: this.props.image,
       tags: [],
@@ -68,9 +68,12 @@ export default class Memory extends React.Component {
       uri: this.state.image.uri,
       type: 'image/jpeg',
       name: 'image.jpg',
+    };
+
+    var location = {
       latitude: this.state.longitute,
       longitude:this.state.latitude
-    };
+    }
 
     try {
       var token =  await AsyncStorage.getItem(STORAGE_KEY);
@@ -90,9 +93,22 @@ export default class Memory extends React.Component {
         }
       }).then(function(res) {
         var databaseId = JSON.parse(res['_bodyInit']);
-        context.getMemoryData(databaseId, 0);
+        fetch('https://spooky-tagme.herokuapp.com/api/memories/location/' + databaseId,
+          {
+            body: JSON.stringify(location),
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            }
+          }).then(function(res) {
+            var databaseId = JSON.parse(res['_bodyInit']);
+            context.getMemoryData(databaseId, 0);
+          });
       });
   }
+
+
 
   async getMemoryData(id, pings) {
     console.log('getMemoryData is called');

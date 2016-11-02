@@ -4,6 +4,7 @@ import Login from './login';
 import Homescreen from './homescreen';
 import Memory from './memory';
 import Memories from './memories';
+import Sketch from './sketch';
 import {
   Navigator
 } from 'react-native';
@@ -22,6 +23,9 @@ class App extends React.Component {
     if (route.name === 'Memories') {
       return <Memories navigator={navigator} {...route.passProps}/>;
     }
+    // if (route.name === 'Sketch') {
+    //   return <Sketch navigator={navigator} {...route.passProps}/>;
+    // }
   }
 
   render() {

@@ -9,7 +9,7 @@ var _ = require('lodash');
 
 // techdebt: break upload into several functions to make it readable
 exports.upload = function(req, res) {
-  console.log('POST /api/memories/upload. username:', req.user.username, 'request:', req);
+  console.log('POST /api/memories/upload. username:', req.user.username);
   if (!req.file) {
     console.log('Multer failed to save file');
     res.status(404).send();
@@ -146,6 +146,31 @@ exports.storeTags = function(req, res) {
     console.log('Error retrieving memory with ID:', req.params.id);
     res.status(404).send();
   });
+};
+
+exports.storeLocation = function(req, res) {
+  // If there is no JSON body, return 400
+  console.log('POST /api/memories/location/*. username:', req.user.username);
+  console.log('POST /api/memories/location/*. location:', req.body);
+  if (!req.body || !req.body.latitude) {
+    return res.sendStatus(400);
+  }
+
+  // Memory.findOne({ _id: req.params.id }).then(function(memory) {
+  //   memory.latitude = req.body.latitude;
+  //   memory.longitude = req.body.longitude;
+  //   memory.save(function(err) {
+  //     if (err) {
+  //       console.log('Error saving location:', err);
+  //       res.sendStatus(404);
+  //     }
+
+  //     res.sendStatus(201);
+  //   });
+  // }).catch(function(err) {
+  //   console.log('Error retrieving memory with ID:', req.params.id);
+  //   res.status(404).send();
+  // });
 };
 
 // searchMemories looks through all memories for the given search term
