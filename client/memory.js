@@ -214,16 +214,6 @@ export default class Memory extends React.Component {
       lng: this.state.longitude
     };
 
-<<<<<<< HEAD
-    await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.lat},${location.lng}&key=${myKey}`, {
-      method: 'GET'
-    }).then(function(res){
-      var result = JSON.parse(res['_bodyInit'])
-      context.setState({city: result.results[0].address_components[3].long_name, state: result.results[0].address_components[5].short_name, visible: true})
-    }).catch(function(err){
-      console.log('error with gelocation fetch')
-    })
-=======
    await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.lat},${location.lng}&key=${myKey}`, {
     method: 'GET'
    }).then(function(res){
@@ -232,7 +222,7 @@ export default class Memory extends React.Component {
    }).catch(function(err){
     console.log('error with gelocation fetch')
    })
->>>>>>> 4c81b8967923d1417d0ea22ce69196ef5ec52fe9
+
 
   }
 
