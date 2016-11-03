@@ -217,11 +217,8 @@ exports.searchMemories = function(req, res) {
 };
 
 exports.deleteOne = function(req, res) {
-  console.log('POST /api/memories/delete/id');
-  console.log(req.body.id);
   Memory.findOne({_id: req.body.id})
     .then(function(memory) {
-      console.log(memory);
       memory.remove(function(err) {
         if (err) {
           res.send(err);
