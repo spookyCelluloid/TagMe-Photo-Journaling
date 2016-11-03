@@ -12,12 +12,8 @@ import { Font } from 'exponent';
 import ModalView from './tagsModal';
 import { Container, Header, Title, Content, Footer, Button, Spinner } from 'native-base';
 import { Ionicons } from '@exponent/vector-icons';
-<<<<<<< HEAD
-import { Geocoder } from 'react-native-geocoder';
 import Share, {ShareSheet} from 'react-native-share';
-=======
 import Geocoder from 'react-native-geocoder';
->>>>>>> b7cefae84ded7eae5e8e6e3469b5732aaea72741
 
 
 var STORAGE_KEY = 'id_token';
