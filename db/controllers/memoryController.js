@@ -218,11 +218,21 @@ exports.searchMemories = function(req, res) {
 
 exports.deleteOne = function(req, res) {
   console.log('POST /api/memories/delete/id');
-  console.log(req.body.id);
-  User.memories.remove({_id: req.body.id}, function(err, memory) {
-    if (err) {
-      res.status(404).send();
-    }
-    console.log('memory deleted', memory);
-  });
+  console.log(req.body);
+
+  Memory.findOne({id: req.body.id})
+    .then(function(memory) {
+      console.log(memory);
+      memory.remove(function(err) {
+        if (err) {
+          console.log(err);
+        }
+        console.log('memory deleted');
+
+      });
+    })
+    .catch(function(err) {
+      console.log(err);
+    });
+
 };
