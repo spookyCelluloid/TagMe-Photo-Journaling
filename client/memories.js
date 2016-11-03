@@ -7,7 +7,8 @@ import {
   TouchableHighlight,
   CameraRoll,
   Image,
-  ScrollView
+  ScrollView,
+  Dimensions
 } from 'react-native';
 import { Font } from 'exponent';
 import { Container, Header, Title, Content, Footer, InputGroup, Input, Button } from 'native-base';
@@ -203,8 +204,8 @@ const styles = StyleSheet.create({
   },
 
   thumbnail: {
-    width: 90,
-    height: 90,
+    width: (Dimensions.get('window').width- 8) / 4,
+    height: (Dimensions.get('window').width- 8) / 4,
     margin: 1
   },
 

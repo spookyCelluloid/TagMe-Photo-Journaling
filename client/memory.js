@@ -50,12 +50,13 @@ export default class Memory extends React.Component {
   }
 
    _navigateMemories() {
-    this.props.navigator.push({
+    this.props.navigator.replacePrevious({
       name: 'Memories',
       passProps: {
         'username': this.props.username
       }
     });
+    this.props.navigator.pop();
   }
 
   async componentDidMount() {
@@ -329,6 +330,9 @@ export default class Memory extends React.Component {
             }} name="ios-share-outline" size={40} color="#5F5E5E" />
 
             {loading}
+
+            <Ionicons style={styles.iconButton} onPress={this.deletePhoto.bind(this)}
+              name="ios-trash-outline" size={40} color="#5F5E5E" />
           </View>
 
           {showCity}
@@ -338,10 +342,6 @@ export default class Memory extends React.Component {
             tags={this.state.filteredTags}
             location={this.state.location}
           />
-
-          <TouchableOpacity onPress={this.deletePhoto.bind(this)}>
-            <Text>Delete Photo</Text>
-          </TouchableOpacity>
 
         </Content>
 
