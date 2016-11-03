@@ -12,8 +12,12 @@ import { Font } from 'exponent';
 import ModalView from './tagsModal';
 import { Container, Header, Title, Content, Footer, Button, Spinner } from 'native-base';
 import { Ionicons } from '@exponent/vector-icons';
+<<<<<<< HEAD
 import { Geocoder } from 'react-native-geocoder';
 import Share, {ShareSheet} from 'react-native-share';
+=======
+import Geocoder from 'react-native-geocoder';
+>>>>>>> b7cefae84ded7eae5e8e6e3469b5732aaea72741
 
 
 var STORAGE_KEY = 'id_token';
@@ -33,12 +37,13 @@ export default class Memory extends React.Component {
       savePhoto: false,
       longitude: this.props.longitude,
       latitude: this.props.latitude,
-      cityName: null
+      city: null,
+      state: null
 
     };
   }
 
-   _navigate() {
+  _navigate() {
     this.props.navigator.push({
       name: 'Homescreen',
       passProps: {
@@ -84,26 +89,26 @@ export default class Memory extends React.Component {
     var form = new FormData();
     form.append('memoryImage', photo);
     fetch('https://spooky-tagme.herokuapp.com/api/memories/upload',
+    {
+      body: form,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': 'Bearer ' + token
+      }
+    }).then(function(res) {
+      var databaseId = JSON.parse(res['_bodyInit']);
+      fetch('https://spooky-tagme.herokuapp.com/api/memories/location/' + databaseId,
       {
-        body: form,
+        body: JSON.stringify(location),
         method: 'POST',
         headers: {
-          'Content-Type': 'multipart/form-data',
+          'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + token
         }
-      }).then(function(res) {
-        var databaseId = JSON.parse(res['_bodyInit']);
-        fetch('https://spooky-tagme.herokuapp.com/api/memories/location/' + databaseId,
-          {
-            body: JSON.stringify(location),
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + token
-            }
-          });
-        context.getMemoryData(databaseId, 0);
       });
+      context.getMemoryData(databaseId, 0);
+    });
   }
 
   async getMemoryData(id, pings) {
@@ -206,13 +211,22 @@ export default class Memory extends React.Component {
   }
 
   async getCityName() {
-    console.log('in get CITY NAME !!!!!!!!!!!!', this.state.latitude, this.state.longitude)
-     Geocoder.geocodePosition({lat: this.state.latitude, lng: this.state.longitude})
-            .then(function(res){
-              console.log('**********', res)
-             this.setState({cityName: res})
-            })
-            .catch(err => console.log(err));
+    var context = this;
+    var myKey = 'AIzaSyBsY6oEKTUuYyJos6jKuvTUT3aDlYKWbts'
+    var location = {
+      lat: this.state.latitude,
+      lng: this.state.longitude
+    };
+
+   await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.lat},${location.lng}&key=${myKey}`, {
+    method: 'GET'
+   }).then(function(res){
+    var result = JSON.parse(res['_bodyInit'])
+    context.setState({city: result.results[0].address_components[3].long_name, state: result.results[0].address_components[5].short_name})
+   }).catch(function(err){
+    console.log('error with gelocation fetch')
+   })
+
   }
 
 
@@ -244,15 +258,16 @@ export default class Memory extends React.Component {
 
     var disabled = false;
     var loading = this.state.status ?
-      <ModalView
-        prevScene={this.props.prevScene}
-        tags={this.state.tags}
-        updateTags={this.updateTags.bind(this)}
-        status={this.state.status}
-      />
-      : null;
+    <ModalView
+    prevScene={this.props.prevScene}
+    tags={this.state.tags}
+    updateTags={this.updateTags.bind(this)}
+    status={this.state.status}
+    />
+    : null;
     return (
       <Container style={ {backgroundColor: 'white'} }>
+
         <Header>
           <Button transparent onPress={() => this.props.navigator.pop()}>
             <Ionicons name="ios-arrow-back" size={32} style={{color: '#25a2c3', marginTop: 5}}/>
@@ -294,7 +309,7 @@ export default class Memory extends React.Component {
 
         </Content>
       </Container>
-    );
+      );
   }
 }
 
@@ -305,30 +320,30 @@ class MemoryDetails extends React.Component {
 
   render() {
     var loading = !this.props.status ?
-      <Spinner
-        color='red'
-        animating={true}
-        size='large'
-        style={styles.spinner}>
-      </Spinner>
-      : null;
+    <Spinner
+    color='red'
+    animating={true}
+    size='large'
+    style={styles.spinner}>
+    </Spinner>
+    : null;
     return (
       <View>
-        <View style={styles.tagsContainer}>
-          {
-            this.props.tags.map(tag =>
-              <Button
-                key={tag}
-                style={styles.tag}
-                rounded info>
-                <Text style={styles.tagText}>{tag}</Text>
-              </Button>
-            )
-          }
-        </View>
-        {loading}
+      <View style={styles.tagsContainer}>
+      {
+        this.props.tags.map(tag =>
+          <Button
+          key={tag}
+          style={styles.tag}
+          rounded info>
+          <Text style={styles.tagText}>{tag}</Text>
+          </Button>
+          )
+      }
       </View>
-    );
+      {loading}
+      </View>
+      );
   }
 }
 
@@ -402,4 +417,8 @@ const styles = StyleSheet.create({
     borderBottomColor: '#DBDADA',
     flexDirection: 'row'
   },
+
+  city: {
+    ...Font.style('montserrat')
+  }
 });
