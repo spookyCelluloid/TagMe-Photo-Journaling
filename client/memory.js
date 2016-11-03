@@ -296,10 +296,7 @@ export default class Memory extends React.Component {
             {loading}
           </View>
 
-          <Text> City: {this.state.cityName} </Text>
-
-          <Text>Longitude: {this.state.longitude}</Text>
-          <Text>Latitude: {this.state.latitude}</Text>
+          <Text style={styles.city}> {`${this.state.city}, ${this.state.state}`} </Text>
           <Text style={styles.caption}>{this.state.caption}</Text>
           <MemoryDetails
             status={this.state.status}
