@@ -43,4 +43,7 @@ router.route('/id/:id').post(jsonParser, memoryController.storeTags);
 //User searches for a specific tag
 router.route('/search/:query').get(memoryController.searchMemories);
 
+// User deletes a photo
+router.route('/delete/:id').post(jsonParser, memoryController.deleteOne);
+
 module.exports = router;

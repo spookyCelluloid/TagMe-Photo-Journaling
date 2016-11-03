@@ -6,14 +6,15 @@ import {
   AsyncStorage,
   Image,
   CameraRoll,
-  TouchableOpacity
+  TouchableOpacity,
+  Dimensions
 } from 'react-native';
 import { Font } from 'exponent';
 import ModalView from './tagsModal';
 import { Container, Header, Title, Content, Footer, Button, Spinner } from 'native-base';
 import { Ionicons } from '@exponent/vector-icons';
+import { Geocoder } from 'react-native-geocoder';
 import Share, {ShareSheet} from 'react-native-share';
-import Geocoder from 'react-native-geocoder';
 
 
 var STORAGE_KEY = 'id_token';
@@ -34,7 +35,8 @@ export default class Memory extends React.Component {
       longitude: this.props.longitude,
       latitude: this.props.latitude,
       city: null,
-      state: null
+      state: null,
+      visible: false
 
     };
   }
@@ -218,10 +220,11 @@ export default class Memory extends React.Component {
     method: 'GET'
    }).then(function(res){
     var result = JSON.parse(res['_bodyInit'])
-    context.setState({city: result.results[0].address_components[3].long_name, state: result.results[0].address_components[5].short_name})
+    context.setState({city: result.results[0].address_components[3].long_name, state: result.results[0].address_components[5].short_name, visible: true})
    }).catch(function(err){
     console.log('error with gelocation fetch')
    })
+
 
   }
 
@@ -244,13 +247,9 @@ export default class Memory extends React.Component {
     };
 
     var saving = this.state.savePhoto ?
-      <Button primary style={ {backgroundColor: 'transparent', margin: 6} } onPress={this.saveToCameraRoll.bind(this)}>
-        <Ionicons name="ios-download-outline" size={40} color="#5F5E5E" />
-      </Button>
+      <Ionicons style={styles.iconButton} name="ios-download-outline" size={40} color="#D8D3D3" />
       :
-      <Button primary style={ {backgroundColor: 'transparent', margin: 6} }>
-        <Ionicons name="ios-download-outline" size={40} color="#D8D3D3" />
-      </Button>
+      <Ionicons style={styles.iconButton} onPress={this.saveToCameraRoll.bind(this)} name="ios-download-outline" size={40} color="#5F5E5E" />
 
     var disabled = false;
     var loading = this.state.status ?
@@ -263,7 +262,6 @@ export default class Memory extends React.Component {
     : null;
     return (
       <Container style={ {backgroundColor: 'white'} }>
-
         <Header>
           <Button transparent onPress={() => this.props.navigator.pop()}>
             <Ionicons name="ios-arrow-back" size={32} style={{color: '#25a2c3', marginTop: 5}}/>
@@ -279,20 +277,16 @@ export default class Memory extends React.Component {
 
 
           <View style={styles.flexRow}>
-            <Button primary style={ {backgroundColor: 'transparent', margin: 6} } onPress={this.saveToCameraRoll.bind(this)}>
-              <Ionicons name="ios-download-outline" size={40} color="#5F5E5E" />
-            </Button>
+            {saving}
 
-            <Button  style={ {backgroundColor: 'transparent', margin: 6} } onPress={()=>{
-                Share.open(shareImageBase64);
-              }}>
-              <Ionicons name="ios-share-outline" size={40} color="#5F5E5E" />
-            </Button>
+            <Ionicons style={styles.iconButton} onPress={()=>{
+              Share.open(shareImageBase64);
+            }} name="ios-share-outline" size={40} color="#5F5E5E" />
 
             {loading}
           </View>
 
-          <Text style={styles.city}> {`${this.state.city}, ${this.state.state}`} </Text>
+          <Text style={this.state.visible ? styles.city : {color: 'white'}}> {`${this.state.city}, ${this.state.state}`} </Text>
           <Text style={styles.caption}>{this.state.caption}</Text>
           <MemoryDetails
             status={this.state.status}
@@ -301,6 +295,7 @@ export default class Memory extends React.Component {
           />
 
         </Content>
+
       </Container>
       );
   }
@@ -360,7 +355,7 @@ const styles = StyleSheet.create({
   caption: {
     ...Font.style('montserrat'),
     fontSize: 16,
-    textAlign: 'center',
+    // textAlign: 'center',
     margin: 10
   },
 
@@ -376,12 +371,19 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    width: 350,
-    height: 350
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').width
   },
 
   spinner: {
     padding: 100
+  },
+
+  iconButton: {
+    backgroundColor: 'transparent',
+    marginLeft: 35,
+    marginTop: 6,
+    marginRight: 35
   },
 
   button: {
@@ -405,13 +407,16 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   flexRow: {
-    margin: 10,
+    marginBottom: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#DBDADA',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
 
   city: {
-    ...Font.style('montserrat')
+    ...Font.style('montserrat'),
+    color: 'black'
   }
 });
