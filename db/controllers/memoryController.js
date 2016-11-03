@@ -156,21 +156,21 @@ exports.storeLocation = function(req, res) {
     return res.sendStatus(400);
   }
 
-  // Memory.findOne({ _id: req.params.id }).then(function(memory) {
-  //   memory.latitude = req.body.latitude;
-  //   memory.longitude = req.body.longitude;
-  //   memory.save(function(err) {
-  //     if (err) {
-  //       console.log('Error saving location:', err);
-  //       res.sendStatus(404);
-  //     }
+  Memory.findOne({ _id: req.params.id }).then(function(memory) {
+    memory.latitude = req.body.latitude;
+    memory.longitude = req.body.longitude;
+    memory.save(function(err) {
+      if (err) {
+        console.log('Error saving location:', err);
+        res.sendStatus(404);
+      }
 
-  //     res.sendStatus(201);
-  //   });
-  // }).catch(function(err) {
-  //   console.log('Error retrieving memory with ID:', req.params.id);
-  //   res.status(404).send();
-  // });
+      res.sendStatus(201);
+    });
+  }).catch(function(err) {
+    console.log('Error retrieving memory with ID:', req.params.id);
+    res.status(404).send();
+  });
 };
 
 // searchMemories looks through all memories for the given search term

@@ -71,8 +71,8 @@ export default class Memory extends React.Component {
     };
 
     var location = {
-      latitude: this.state.longitute,
-      longitude:this.state.latitude
+      latitude: this.state.latitude,
+      longitude:this.state.longitude
     }
 
     try {
