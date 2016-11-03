@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PropTypes, Component } from 'react';
 import {
   StyleSheet,
   View,
@@ -15,6 +15,8 @@ import { Container, Header, Title, Content, Footer, Button, Spinner } from 'nati
 import { Ionicons } from '@exponent/vector-icons';
 import { Geocoder } from 'react-native-geocoder';
 import Share, {ShareSheet} from 'react-native-share';
+import PeekPop from './PeekPop';
+import Peekable from './Peekable';
 
 
 var STORAGE_KEY = 'id_token';
@@ -376,23 +378,24 @@ class MemoryDetails extends React.Component {
     : null;
     return (
       <View>
-      <View style={styles.tagsContainer}>
-      {
-        this.props.tags.map(tag =>
-          <Button
-          key={tag}
-          style={styles.tag}
-          rounded info>
-          <Text style={styles.tagText}>{tag}</Text>
-          </Button>
-          )
-      }
-      </View>
-      {loading}
+        <View style={styles.tagsContainer}>
+        {
+          this.props.tags.map(tag =>
+            <Button
+            key={tag}
+            style={styles.tag}
+            rounded info>
+            <Text style={styles.tagText}>{tag}</Text>
+            </Button>
+            )
+        }
+        </View>
+        {loading}
       </View>
       );
   }
 }
+
 
 const styles = StyleSheet.create({
   headerText: {
