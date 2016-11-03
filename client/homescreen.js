@@ -21,7 +21,7 @@ export default class Homescreen extends React.Component {
     this.state = {
       fontLoaded: false,
       initialPosition: null
-      
+
     }
   }
 
@@ -105,7 +105,7 @@ export default class Homescreen extends React.Component {
         );
 
       }
-       this._navigate('Memory', image.uri, this.state.initialPosition);
+       // this._navigate('Memory', image.uri, this.state.initialPosition);
     });
   }
 

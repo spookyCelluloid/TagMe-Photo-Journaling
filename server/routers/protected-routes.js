@@ -10,7 +10,7 @@ var storage = multer.diskStorage({
     cb(null, 'uploads/');
   },
   filename: function (req, file, cb) {
-    // console.log('the original file name is', file);
+    console.log('the original file name is', file);
     cb(null, file.originalname);
   }
 });
@@ -29,6 +29,8 @@ router.use('/', jwtCheck);
 
 // User uploads an image to create a memory
 router.route('/upload').post(upload.single('memoryImage'), memoryController.upload);
+
+router.route('/location/:id').post(jsonParser, memoryController.storeLocation);
 
 // User clicks button to view all memories
 router.route('/all').get(memoryController.fetchMemories);
