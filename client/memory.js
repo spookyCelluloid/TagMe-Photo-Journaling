@@ -12,12 +12,8 @@ import { Font } from 'exponent';
 import ModalView from './tagsModal';
 import { Container, Header, Title, Content, Footer, Button, Spinner } from 'native-base';
 import { Ionicons } from '@exponent/vector-icons';
-<<<<<<< HEAD
 import { Geocoder } from 'react-native-geocoder';
 import Share, {ShareSheet} from 'react-native-share';
-=======
-import Geocoder from 'react-native-geocoder';
->>>>>>> b7cefae84ded7eae5e8e6e3469b5732aaea72741
 
 
 var STORAGE_KEY = 'id_token';
@@ -38,7 +34,8 @@ export default class Memory extends React.Component {
       longitude: this.props.longitude,
       latitude: this.props.latitude,
       city: null,
-      state: null
+      state: null,
+      visible: false
 
     };
   }
@@ -222,10 +219,11 @@ export default class Memory extends React.Component {
     method: 'GET'
    }).then(function(res){
     var result = JSON.parse(res['_bodyInit'])
-    context.setState({city: result.results[0].address_components[3].long_name, state: result.results[0].address_components[5].short_name})
+    context.setState({city: result.results[0].address_components[3].long_name, state: result.results[0].address_components[5].short_name, visible: true})
    }).catch(function(err){
     console.log('error with gelocation fetch')
    })
+
 
   }
 
@@ -267,7 +265,6 @@ export default class Memory extends React.Component {
     : null;
     return (
       <Container style={ {backgroundColor: 'white'} }>
-
         <Header>
           <Button transparent onPress={() => this.props.navigator.pop()}>
             <Ionicons name="ios-arrow-back" size={32} style={{color: '#25a2c3', marginTop: 5}}/>
@@ -296,7 +293,7 @@ export default class Memory extends React.Component {
             {loading}
           </View>
 
-          <Text style={styles.city}> {`${this.state.city}, ${this.state.state}`} </Text>
+          <Text style={this.state.visible ? styles.city : {color: 'white'}}> {`${this.state.city}, ${this.state.state}`} </Text>
           <Text style={styles.caption}>{this.state.caption}</Text>
           <MemoryDetails
             status={this.state.status}
@@ -305,6 +302,7 @@ export default class Memory extends React.Component {
           />
 
         </Content>
+
       </Container>
       );
   }
@@ -416,6 +414,7 @@ const styles = StyleSheet.create({
   },
 
   city: {
-    ...Font.style('montserrat')
+    ...Font.style('montserrat'),
+    color: 'black'
   }
 });
