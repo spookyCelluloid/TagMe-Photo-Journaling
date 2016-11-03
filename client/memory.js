@@ -224,15 +224,15 @@ export default class Memory extends React.Component {
       lat: this.state.latitude,
       lng: this.state.longitude
     };
-   
-   await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.lat},${location.lng}&key=${myKey}`, {
-    method: 'GET'
-   }).then(function(res){
-    var result = JSON.parse(res['_bodyInit'])
-    context.setState({city: result.results[0].address_components[3].long_name, state: result.results[0].address_components[5].short_name})
-   }).catch(function(err){
-    console.log('error with gelocation fetch')
-   })
+
+    await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.lat},${location.lng}&key=${myKey}`, {
+      method: 'GET'
+    }).then(function(res){
+      var result = JSON.parse(res['_bodyInit'])
+      context.setState({city: result.results[0].address_components[3].long_name, state: result.results[0].address_components[5].short_name, visible: true})
+    }).catch(function(err){
+      console.log('error with gelocation fetch')
+    })
 
   }
 
@@ -267,7 +267,7 @@ export default class Memory extends React.Component {
         }
       }>
       <Image style={styles.image} resizeMode={Image.resizeMode.contain} source={{uri: this.state.image.uri}}/>
-      <Text style={styles.city}> {`${this.state.city}, ${this.state.state}`} </Text>
+      <Text style={this.state.city === null ? {display: 'none'} : styles.city}> {`${this.state.city}, ${this.state.state}`} </Text>
       <Text style={styles.caption}>{this.state.caption}</Text>
       <MemoryDetails
       status={this.state.status}
