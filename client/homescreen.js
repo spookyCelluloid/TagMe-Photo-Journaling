@@ -203,10 +203,10 @@ const styles = StyleSheet.create({
 
   choiceButton: {
     height: 80,
-    width: 170,
+    width: (Dimensions.get('window') - 10) / 2,
     borderRadius: 4,
     backgroundColor: '#f6755e',
-    margin: 5
+    margin: 10
   },
 
   takePhotoButton: {
