@@ -7,7 +7,8 @@ import {
   Image,
   AlertIOS,
   AsyncStorage,
-  StatusBar
+  StatusBar,
+  Dimensions
 } from 'react-native';
 import { Font } from 'exponent';
 import { Container, Header, Title, Content, Footer, Button } from 'native-base';
@@ -231,7 +232,7 @@ const styles = StyleSheet.create({
   },
 
   logoutTextIcon: {
-    paddingLeft: 550,
+    marginLeft: Dimensions.get('window').width - 255.7328572394857923489,
     height: 30,
     justifyContent: 'center',
     alignItems: 'center'
