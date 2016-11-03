@@ -222,6 +222,13 @@ exports.deleteOne = function(req, res) {
   Memory.findOne({_id: req.body.id})
     .then(function(memory) {
       console.log(memory);
+      memory.remove(function(err) {
+        if (err) {
+          res.send(err);
+        }
+
+        res.sendStatus(201);
+      })
     })
     .catch(function(err) {
       console.log(err);
