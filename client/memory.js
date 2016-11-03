@@ -6,7 +6,8 @@ import {
   AsyncStorage,
   Image,
   CameraRoll,
-  TouchableOpacity
+  TouchableOpacity,
+  Dimensions
 } from 'react-native';
 import { Font } from 'exponent';
 import ModalView from './tagsModal';
@@ -246,13 +247,9 @@ export default class Memory extends React.Component {
     };
 
     var saving = this.state.savePhoto ?
-      <Button primary style={ {backgroundColor: 'transparent', margin: 6} } onPress={this.saveToCameraRoll.bind(this)}>
-        <Ionicons name="ios-download-outline" size={40} color="#5F5E5E" />
-      </Button>
+      <Ionicons style={styles.iconButton} name="ios-download-outline" size={40} color="#D8D3D3" />
       :
-      <Button primary style={ {backgroundColor: 'transparent', margin: 6} }>
-        <Ionicons name="ios-download-outline" size={40} color="#D8D3D3" />
-      </Button>
+      <Ionicons style={styles.iconButton} onPress={this.saveToCameraRoll.bind(this)} name="ios-download-outline" size={40} color="#5F5E5E" />
 
     var disabled = false;
     var loading = this.state.status ?
@@ -280,15 +277,11 @@ export default class Memory extends React.Component {
 
 
           <View style={styles.flexRow}>
-            <Button primary style={ {backgroundColor: 'transparent', margin: 6} } onPress={this.saveToCameraRoll.bind(this)}>
-              <Ionicons name="ios-download-outline" size={40} color="#5F5E5E" />
-            </Button>
+            {saving}
 
-            <Button  style={ {backgroundColor: 'transparent', margin: 6} } onPress={()=>{
-                Share.open(shareImageBase64);
-              }}>
-              <Ionicons name="ios-share-outline" size={40} color="#5F5E5E" />
-            </Button>
+            <Ionicons style={styles.iconButton} onPress={()=>{
+              Share.open(shareImageBase64);
+            }} name="ios-share-outline" size={40} color="#5F5E5E" />
 
             {loading}
           </View>
@@ -362,7 +355,7 @@ const styles = StyleSheet.create({
   caption: {
     ...Font.style('montserrat'),
     fontSize: 16,
-    textAlign: 'center',
+    // textAlign: 'center',
     margin: 10
   },
 
@@ -378,12 +371,19 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    width: 350,
-    height: 350
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').width
   },
 
   spinner: {
     padding: 100
+  },
+
+  iconButton: {
+    backgroundColor: 'transparent',
+    marginLeft: 35,
+    marginTop: 6,
+    marginRight: 35
   },
 
   button: {
@@ -407,10 +407,12 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   flexRow: {
-    margin: 10,
+    marginBottom: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#DBDADA',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
 
   city: {
