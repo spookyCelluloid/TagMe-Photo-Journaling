@@ -338,20 +338,11 @@ export default class Memory extends React.Component {
             tags={this.state.filteredTags}
             location={this.state.location}
           />
-          <TouchableOpacity
-            style={this.state.savePhoto ? styles.buttonDisabled : styles.button}
-            activeOpacity={0.3}
-            onPress={this.saveToCameraRoll.bind(this)}
-            disabled={this.state.savePhoto}>
-            <Text style={styles.buttonText}>
-              {this.state.savePhotoText}  <Ionicons name="ios-download-outline" size={18} color="white" />
-            </Text>
-          </TouchableOpacity>
+
           <TouchableOpacity onPress={this.deletePhoto.bind(this)}>
             <Text>Delete Photo</Text>
           </TouchableOpacity>
-          <SocialMediaShare Image={this.state}/>
-          {loading}
+
         </Content>
 
       </Container>
