@@ -62,9 +62,9 @@ export default class TestShare extends Component {
     };
 
     return (
-      <View style={styles.container}>
+      <View >
 
-        <Button primary style={ {backgroundColor: 'transparent'} } onPress={()=>{
+        <Button  style={ {backgroundColor: 'transparent'} } onPress={()=>{
             Share.open(shareImageBase64);
           }}>
           <Ionicons name="ios-share-outline" size={30} color="black" />
@@ -146,17 +146,17 @@ export default class TestShare extends Component {
 }
 
 const styles = StyleSheet.create({
-  button: {
-    margin: 10,
-    backgroundColor: '#f6755e',
-    padding: 10,
-    borderRadius: 4
-  },
-  buttonText: {
-    ...Font.style('montserrat'),
-    color: '#fff',
-    fontSize: 18
-  }
+  // button: {
+  //   margin: 10,
+  //   backgroundColor: '#f6755e',
+  //   padding: 10,
+  //   borderRadius: 4
+  // },
+  // buttonText: {
+  //   ...Font.style('montserrat'),
+  //   color: '#fff',
+  //   fontSize: 18
+  // }
 });
 
 /*

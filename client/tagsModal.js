@@ -64,8 +64,8 @@ export default class ModalView extends React.Component {
   render() {
     return (
       <View>
-        <Button primary style={ {backgroundColor: 'transparent'} } onPress={this.setModalVisible.bind(this, true)}>
-          <Ionicons name="ios-pricetags-outline" size={30} color="black" />
+        <Button primary style={ {backgroundColor: 'transparent', margin: 6} } onPress={this.setModalVisible.bind(this, true)}>
+          <Ionicons name="ios-pricetags-outline" size={37} color="#5F5E5E" />
         </Button>
 
 

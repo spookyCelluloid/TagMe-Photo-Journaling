@@ -10,10 +10,10 @@ import {
 } from 'react-native';
 import { Font } from 'exponent';
 import ModalView from './tagsModal';
-import SocialMediaShare from './socialMediaShare';
 import { Container, Header, Title, Content, Footer, Button, Spinner } from 'native-base';
 import { Ionicons } from '@exponent/vector-icons';
 import { Geocoder } from 'react-native-geocoder';
+import Share, {ShareSheet} from 'react-native-share';
 
 
 var STORAGE_KEY = 'id_token';
@@ -31,7 +31,6 @@ export default class Memory extends React.Component {
       databaseId: '',
       caption: '',
       savePhoto: false,
-      savePhotoText: 'Save to Library',
       longitude: this.props.longitude,
       latitude: this.props.latitude,
       cityName: null
@@ -219,6 +218,30 @@ export default class Memory extends React.Component {
 
 
   render() {
+
+    let shareOptions = {
+      title: "title test share options",
+      message: this.state.caption,
+      url: this.state.image.uri,
+      subject: "Check out this TageMe photo!" //  for email
+    };
+
+    let shareImageBase64 = {
+      title: 'title test',
+      message: this.state.caption,
+      url: this.state.image.uri,
+      subject: "Check out this TagMe photo!" //  for email
+    };
+
+    var saving = this.state.savePhoto ?
+      <Button primary style={ {backgroundColor: 'transparent', margin: 6} } onPress={this.saveToCameraRoll.bind(this)}>
+        <Ionicons name="ios-download-outline" size={40} color="#5F5E5E" />
+      </Button>
+      :
+      <Button primary style={ {backgroundColor: 'transparent', margin: 6} }>
+        <Ionicons name="ios-download-outline" size={40} color="#D8D3D3" />
+      </Button>
+
     var disabled = false;
     var loading = this.state.status ?
       <ModalView
@@ -245,11 +268,15 @@ export default class Memory extends React.Component {
 
 
           <View style={styles.flexRow}>
-            <Button primary style={ {backgroundColor: 'transparent'} } onPress={this.saveToCameraRoll.bind(this)}>
-              <Ionicons name="ios-download-outline" size={30} color="black" />
+            <Button primary style={ {backgroundColor: 'transparent', margin: 6} } onPress={this.saveToCameraRoll.bind(this)}>
+              <Ionicons name="ios-download-outline" size={40} color="#5F5E5E" />
             </Button>
 
-            <SocialMediaShare Image={this.state}/>
+            <Button  style={ {backgroundColor: 'transparent', margin: 6} } onPress={()=>{
+                Share.open(shareImageBase64);
+              }}>
+              <Ionicons name="ios-share-outline" size={40} color="#5F5E5E" />
+            </Button>
 
             {loading}
           </View>
@@ -264,17 +291,7 @@ export default class Memory extends React.Component {
             tags={this.state.filteredTags}
             location={this.state.location}
           />
-          <TouchableOpacity
-            style={this.state.savePhoto ? styles.buttonDisabled : styles.button}
-            activeOpacity={0.3}
-            onPress={this.saveToCameraRoll.bind(this)}
-            disabled={this.state.savePhoto}>
-            <Text style={styles.buttonText}>
-              {this.state.savePhotoText}  <Ionicons name="ios-download-outline" size={18} color="white" />
-            </Text>
-          </TouchableOpacity>
-          <SocialMediaShare Image={this.state}/>
-          {loading}
+
         </Content>
       </Container>
     );
@@ -380,6 +397,9 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   flexRow: {
+    margin: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#DBDADA',
     flexDirection: 'row'
   },
 });
