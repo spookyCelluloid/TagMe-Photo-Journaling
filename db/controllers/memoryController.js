@@ -230,9 +230,4 @@ exports.deleteOne = function(req, res) {
     .catch(function(err) {
       console.log(err);
     });
-    // , function(err, memory) {
-    // if (err) {
-    //   res.status(404).send();
-    // }
-    // console.log('memory deleted', memory);
 };
