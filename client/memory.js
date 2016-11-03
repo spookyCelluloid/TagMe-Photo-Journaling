@@ -47,16 +47,6 @@ export default class Memory extends React.Component {
     });
   }
 
-   _navigateEdit() {
-    this.props.navigator.push({
-      name: 'Sketch',
-      passProps: {
-        'username': this.props.username,
-        'image': this.state.image
-      }
-    });
-  }
-
   async componentDidMount() {
     await Font.loadAsync({
       'pacifico': require('./assets/fonts/Pacifico.ttf'),
@@ -236,14 +226,22 @@ export default class Memory extends React.Component {
             <Ionicons name="ios-home" size={35} color="#444" />
           </Button>
         </Header>
-        <Content
-          contentContainerStyle={
-            {
-              justifyContent: 'center',
-              alignItems: 'center'
-            }
-          }>
+        <Content>
+
           <Image style={styles.image} resizeMode={Image.resizeMode.contain} source={{uri: this.state.image.uri}}/>
+
+
+          <View style={styles.flexRow}>
+            <Button primary style={ {backgroundColor: 'transparent'} } onPress={this.saveToCameraRoll.bind(this)}>
+              <Ionicons name="ios-download-outline" size={30} color="black" />
+            </Button>
+
+            <SocialMediaShare Image={this.state}/>
+
+            {loading}
+          </View>
+
+
           <Text>Longitude: {this.state.longitude}</Text>
           <Text>Latitude: {this.state.latitude}</Text>
           <Text style={styles.caption}>{this.state.caption}</Text>
@@ -366,5 +364,8 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     textAlign: 'center'
-  }
+  },
+  flexRow: {
+    flexDirection: 'row'
+  },
 });
