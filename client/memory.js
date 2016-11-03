@@ -13,6 +13,7 @@ import ModalView from './tagsModal';
 import SocialMediaShare from './socialMediaShare';
 import { Container, Header, Title, Content, Footer, Button, Spinner } from 'native-base';
 import { Ionicons } from '@exponent/vector-icons';
+import { Geocoder } from 'react-native-geocoder';
 
 
 var STORAGE_KEY = 'id_token';
@@ -32,10 +33,10 @@ export default class Memory extends React.Component {
       savePhoto: false,
       savePhotoText: 'Save to Library',
       longitude: this.props.longitude,
-      latitude: this.props.latitude
+      latitude: this.props.latitude,
+      cityName: null
 
     };
-    console.log('IN MEMORY PROPS', props)
   }
 
    _navigate() {
@@ -116,8 +117,6 @@ export default class Memory extends React.Component {
       });
   }
 
-
-
   async getMemoryData(id, pings) {
     console.log('getMemoryData is called');
     var context = this;
@@ -127,7 +126,8 @@ export default class Memory extends React.Component {
       console.log('AsyncStorage error: ' + error.message);
     }
 
-    fetch('https://spooky-tagme.herokuapp.com/api/memories/id/' + id, {
+
+    await fetch('https://spooky-tagme.herokuapp.com/api/memories/id/' + id, {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + token
@@ -177,8 +177,11 @@ export default class Memory extends React.Component {
           caption: 'Request Timeout'
         });
       }
-    });
+    })
+    
+    this.getCityName();
   }
+
 
   async saveToCameraRoll() {
     CameraRoll.saveToCameraRoll(this.state.image.uri);
@@ -213,6 +216,16 @@ export default class Memory extends React.Component {
     })
   }
 
+  async getCityName() {
+    console.log('in get CITY NAME !!!!!!!!!!!!', this.state.latitude, this.state.longitude)
+     Geocoder.geocodePosition({lat: this.state.latitude, lng: this.state.longitude})
+            .then(function(res){
+              console.log('**********', res)
+             this.setState({cityName: res})
+            })
+            .catch(err => console.log(err));
+  }
+
 
 
   render() {
@@ -244,6 +257,7 @@ export default class Memory extends React.Component {
             }
           }>
           <Image style={styles.image} resizeMode={Image.resizeMode.contain} source={{uri: this.state.image.uri}}/>
+          <Text> City: {this.state.cityName} </Text>
           <Text>Longitude: {this.state.longitude}</Text>
           <Text>Latitude: {this.state.latitude}</Text>
           <Text style={styles.caption}>{this.state.caption}</Text>
