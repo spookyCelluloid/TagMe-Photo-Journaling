@@ -50,6 +50,15 @@ export default class Memory extends React.Component {
     });
   }
 
+   _navigateMemories() {
+    this.props.navigator.push({
+      name: 'Memories',
+      passProps: {
+        'username': this.props.username
+      }
+    });
+  }
+
   async componentDidMount() {
     await Font.loadAsync({
       'pacifico': require('./assets/fonts/Pacifico.ttf'),
@@ -229,6 +238,39 @@ export default class Memory extends React.Component {
   }
 
 
+  async deletePhoto() {
+    var context = this;
+
+    try {
+      var token =  await AsyncStorage.getItem(STORAGE_KEY);
+    } catch (error) {
+      console.log('AsyncStorage error: ' + error.message);
+    }
+
+    console.log('this.state.databaseId', this.state.databaseId);
+    var endpoint = 'https://spooky-tagme.herokuapp.com/api/memories/delete/' + this.state.databaseId;
+    console.log('endpoint', endpoint);
+
+    await fetch('https://spooky-tagme.herokuapp.com/api/memories/delete/' + this.state.databaseId, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      body: JSON.stringify({
+        id: this.state.databaseId,
+        user: this.props.username
+      })
+    }).then(function(res) {
+      console.log(res)
+     context._navigateMemories()
+    }).catch(function(err) {
+      console.log('error with fetch POST request', err);
+    });
+  }
+
+
+
 
   render() {
 
@@ -297,7 +339,20 @@ export default class Memory extends React.Component {
             tags={this.state.filteredTags}
             location={this.state.location}
           />
-
+          <TouchableOpacity
+            style={this.state.savePhoto ? styles.buttonDisabled : styles.button}
+            activeOpacity={0.3}
+            onPress={this.saveToCameraRoll.bind(this)}
+            disabled={this.state.savePhoto}>
+            <Text style={styles.buttonText}>
+              {this.state.savePhotoText}  <Ionicons name="ios-download-outline" size={18} color="white" />
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.deletePhoto.bind(this)}>
+            <Text>Delete Photo</Text>
+          </TouchableOpacity>
+          <SocialMediaShare Image={this.state}/>
+          {loading}
         </Content>
 
       </Container>
