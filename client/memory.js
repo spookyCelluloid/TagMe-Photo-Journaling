@@ -13,7 +13,7 @@ import ModalView from './tagsModal';
 import SocialMediaShare from './socialMediaShare';
 import { Container, Header, Title, Content, Footer, Button, Spinner } from 'native-base';
 import { Ionicons } from '@exponent/vector-icons';
-import { Geocoder } from 'react-native-geocoder';
+import Geocoder from 'react-native-geocoder';
 
 
 var STORAGE_KEY = 'id_token';
@@ -34,12 +34,13 @@ export default class Memory extends React.Component {
       savePhotoText: 'Save to Library',
       longitude: this.props.longitude,
       latitude: this.props.latitude,
-      cityName: null
+      city: null,
+      state: null
 
     };
   }
 
-   _navigate() {
+  _navigate() {
     this.props.navigator.push({
       name: 'Homescreen',
       passProps: {
@@ -48,7 +49,7 @@ export default class Memory extends React.Component {
     });
   }
 
-   _navigateEdit() {
+  _navigateEdit() {
     this.props.navigator.push({
       name: 'Sketch',
       passProps: {
@@ -95,26 +96,26 @@ export default class Memory extends React.Component {
     var form = new FormData();
     form.append('memoryImage', photo);
     fetch('https://spooky-tagme.herokuapp.com/api/memories/upload',
+    {
+      body: form,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': 'Bearer ' + token
+      }
+    }).then(function(res) {
+      var databaseId = JSON.parse(res['_bodyInit']);
+      fetch('https://spooky-tagme.herokuapp.com/api/memories/location/' + databaseId,
       {
-        body: form,
+        body: JSON.stringify(location),
         method: 'POST',
         headers: {
-          'Content-Type': 'multipart/form-data',
+          'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + token
         }
-      }).then(function(res) {
-        var databaseId = JSON.parse(res['_bodyInit']);
-        fetch('https://spooky-tagme.herokuapp.com/api/memories/location/' + databaseId,
-          {
-            body: JSON.stringify(location),
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + token
-            }
-          });
-        context.getMemoryData(databaseId, 0);
       });
+      context.getMemoryData(databaseId, 0);
+    });
   }
 
   async getMemoryData(id, pings) {
@@ -217,13 +218,22 @@ export default class Memory extends React.Component {
   }
 
   async getCityName() {
-    console.log('in get CITY NAME !!!!!!!!!!!!', this.state.latitude, this.state.longitude)
-     Geocoder.geocodePosition({lat: this.state.latitude, lng: this.state.longitude})
-            .then(function(res){
-              console.log('**********', res)
-             this.setState({cityName: res})
-            })
-            .catch(err => console.log(err));
+    var context = this;
+    var myKey = 'AIzaSyBsY6oEKTUuYyJos6jKuvTUT3aDlYKWbts'
+    var location = {
+      lat: this.state.latitude,
+      lng: this.state.longitude
+    };
+   
+   await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.lat},${location.lng}&key=${myKey}`, {
+    method: 'GET'
+   }).then(function(res){
+    var result = JSON.parse(res['_bodyInit'])
+    context.setState({city: result.results[0].address_components[3].long_name, state: result.results[0].address_components[5].short_name})
+   }).catch(function(err){
+    console.log('error with gelocation fetch')
+   })
+
   }
 
 
@@ -231,55 +241,53 @@ export default class Memory extends React.Component {
   render() {
     var disabled = false;
     var loading = this.state.status ?
-      <ModalView
-        prevScene={this.props.prevScene}
-        tags={this.state.tags}
-        updateTags={this.updateTags.bind(this)}
-        status={this.state.status}
-      />
-      : null;
+    <ModalView
+    prevScene={this.props.prevScene}
+    tags={this.state.tags}
+    updateTags={this.updateTags.bind(this)}
+    status={this.state.status}
+    />
+    : null;
     return (
       <Container style={ {backgroundColor: 'white'} }>
-        <Header>
-          <Button transparent onPress={() => this.props.navigator.pop()}>
-            <Ionicons name="ios-arrow-back" size={32} style={{color: '#25a2c3', marginTop: 5}}/>
-          </Button>
-          <Title style={styles.headerText}>{this.state.date}</Title>
-          <Button transparent onPress={this._navigate.bind(this)}>
-            <Ionicons name="ios-home" size={35} color="#444" />
-          </Button>
-        </Header>
-        <Content
-          contentContainerStyle={
-            {
-              justifyContent: 'center',
-              alignItems: 'center'
-            }
-          }>
-          <Image style={styles.image} resizeMode={Image.resizeMode.contain} source={{uri: this.state.image.uri}}/>
-          <Text> City: {this.state.cityName} </Text>
-          <Text>Longitude: {this.state.longitude}</Text>
-          <Text>Latitude: {this.state.latitude}</Text>
-          <Text style={styles.caption}>{this.state.caption}</Text>
-          <MemoryDetails
-            status={this.state.status}
-            tags={this.state.filteredTags}
-            location={this.state.location}
-          />
-          <TouchableOpacity
-            style={this.state.savePhoto ? styles.buttonDisabled : styles.button}
-            activeOpacity={0.3}
-            onPress={this.saveToCameraRoll.bind(this)}
-            disabled={this.state.savePhoto}>
-            <Text style={styles.buttonText}>
-              {this.state.savePhotoText}  <Ionicons name="ios-download-outline" size={18} color="white" />
-            </Text>
-          </TouchableOpacity>
-          <SocialMediaShare Image={this.state}/>
-          {loading}
-        </Content>
+      <Header>
+      <Button transparent onPress={() => this.props.navigator.pop()}>
+      <Ionicons name="ios-arrow-back" size={32} style={{color: '#25a2c3', marginTop: 5}}/>
+      </Button>
+      <Title style={styles.headerText}>{this.state.date}</Title>
+      <Button transparent onPress={this._navigate.bind(this)}>
+      <Ionicons name="ios-home" size={35} color="#444" />
+      </Button>
+      </Header>
+      <Content
+      contentContainerStyle={
+        {
+          justifyContent: 'center',
+          alignItems: 'center'
+        }
+      }>
+      <Image style={styles.image} resizeMode={Image.resizeMode.contain} source={{uri: this.state.image.uri}}/>
+      <Text style={styles.city}> {`${this.state.city}, ${this.state.state}`} </Text>
+      <Text style={styles.caption}>{this.state.caption}</Text>
+      <MemoryDetails
+      status={this.state.status}
+      tags={this.state.filteredTags}
+      location={this.state.location}
+      />
+      <TouchableOpacity
+      style={this.state.savePhoto ? styles.buttonDisabled : styles.button}
+      activeOpacity={0.3}
+      onPress={this.saveToCameraRoll.bind(this)}
+      disabled={this.state.savePhoto}>
+      <Text style={styles.buttonText}>
+      {this.state.savePhotoText}  <Ionicons name="ios-download-outline" size={18} color="white" />
+      </Text>
+      </TouchableOpacity>
+      <SocialMediaShare Image={this.state}/>
+      {loading}
+      </Content>
       </Container>
-    );
+      );
   }
 }
 
@@ -290,30 +298,30 @@ class MemoryDetails extends React.Component {
 
   render() {
     var loading = !this.props.status ?
-      <Spinner
-        color='red'
-        animating={true}
-        size='large'
-        style={styles.spinner}>
-      </Spinner>
-      : null;
+    <Spinner
+    color='red'
+    animating={true}
+    size='large'
+    style={styles.spinner}>
+    </Spinner>
+    : null;
     return (
       <View>
-        <View style={styles.tagsContainer}>
-          {
-            this.props.tags.map(tag =>
-              <Button
-                key={tag}
-                style={styles.tag}
-                rounded info>
-                <Text style={styles.tagText}>{tag}</Text>
-              </Button>
-            )
-          }
-        </View>
-        {loading}
+      <View style={styles.tagsContainer}>
+      {
+        this.props.tags.map(tag =>
+          <Button
+          key={tag}
+          style={styles.tag}
+          rounded info>
+          <Text style={styles.tagText}>{tag}</Text>
+          </Button>
+          )
+      }
       </View>
-    );
+      {loading}
+      </View>
+      );
   }
 }
 
@@ -380,5 +388,8 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     textAlign: 'center'
+  },
+  city: {
+    ...Font.style('montserrat')
   }
 });
