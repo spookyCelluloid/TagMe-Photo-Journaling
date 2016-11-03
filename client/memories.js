@@ -121,7 +121,6 @@ export default class Memories extends React.Component {
   render() {
     return (
       <Container style={ {backgroundColor: 'white'} }>
-        {/* <View> */}
           {
             this.state.fontLoaded ? (
           <Header>
@@ -155,7 +154,6 @@ export default class Memories extends React.Component {
               ) : null
             }
           </View>
-          {/* <ScrollView style={{flex: 1}}> */}
             <Content contentContainerStyle={{
               flexWrap: 'wrap',
               flexDirection: 'row',
@@ -177,8 +175,6 @@ export default class Memories extends React.Component {
                 )
               }
             </Content>
-          {/* </ScrollView> */}
-        {/* </View> */}
         <View>
           <Button style={styles.saveAll} onPress={this.saveToCameraRoll.bind(this)}><Text style={styles.buttonText}>Save all memories</Text></Button>
         </View>
