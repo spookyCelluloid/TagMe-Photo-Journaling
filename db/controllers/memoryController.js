@@ -226,8 +226,10 @@ exports.deleteOne = function(req, res) {
 
         res.sendStatus(201);
       })
+
     })
     .catch(function(err) {
       console.log(err);
     });
+
 };
