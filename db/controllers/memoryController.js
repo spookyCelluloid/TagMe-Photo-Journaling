@@ -215,3 +215,14 @@ exports.searchMemories = function(req, res) {
     res.status(404).send('error searching the databse');
   });
 };
+
+exports.deleteOne = function(req, res) {
+  console.log('POST /api/memories/delete/id');
+  console.log(req.body.id);
+  User.memories.remove({_id: req.body.id}, function(err, memory) {
+    if (err) {
+      res.status(404).send();
+    }
+    console.log('memory deleted', memory);
+  });
+};
