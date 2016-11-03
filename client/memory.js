@@ -47,6 +47,16 @@ export default class Memory extends React.Component {
     });
   }
 
+   _navigateEdit() {
+    this.props.navigator.push({
+      name: 'Sketch',
+      passProps: {
+        'username': this.props.username,
+        'image': this.state.image
+      }
+    });
+  }
+
   async componentDidMount() {
     await Font.loadAsync({
       'pacifico': require('./assets/fonts/Pacifico.ttf'),
