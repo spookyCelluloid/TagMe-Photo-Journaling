@@ -246,6 +246,10 @@ export default class Memory extends React.Component {
       subject: "Check out this TagMe photo!" //  for email
     };
 
+    var showCity = this.state.visible ?
+      <Text style={styles.city}> {`${this.state.city}, ${this.state.state}`} </Text>
+      : null;
+
     var saving = this.state.savePhoto ?
       <Ionicons style={styles.iconButton} name="ios-download-outline" size={40} color="#D8D3D3" />
       :
@@ -286,7 +290,7 @@ export default class Memory extends React.Component {
             {loading}
           </View>
 
-          <Text style={this.state.visible ? styles.city : {color: 'white'}}> {`${this.state.city}, ${this.state.state}`} </Text>
+          {showCity}
           <Text style={styles.caption}>{this.state.caption}</Text>
           <MemoryDetails
             status={this.state.status}
@@ -417,6 +421,8 @@ const styles = StyleSheet.create({
 
   city: {
     ...Font.style('montserrat'),
-    color: 'black'
+    color: 'black',
+    marginLeft:10,
+    fontSize: 18
   }
 });
