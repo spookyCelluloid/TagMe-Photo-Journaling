@@ -62,19 +62,14 @@ export default class TestShare extends Component {
     };
 
     return (
-      <View style={styles.container}>
+      <View >
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={()=>{
+        <Button  style={ {backgroundColor: 'transparent'} } onPress={()=>{
             Share.open(shareImageBase64);
           }}>
-          <View style={styles.instructions}>
-            <Text style={styles.buttonText}>
-              Share Photo!  <Ionicons name="ios-share-outline" size={18} color="white" />
-            </Text>
-          </View>
-        </TouchableOpacity>
+          <Ionicons name="ios-share-outline" size={30} color="black" />
+        </Button>
+
 
         <ShareSheet visible={this.state.visible} onCancel={this.onCancel.bind(this)}>
           <Button iconSrc={{ uri: TWITTER_ICON }}
@@ -151,18 +146,32 @@ export default class TestShare extends Component {
 }
 
 const styles = StyleSheet.create({
-  button: {
-    margin: 10,
-    backgroundColor: '#f6755e',
-    padding: 10,
-    borderRadius: 4
-  },
-  buttonText: {
-    ...Font.style('montserrat'),
-    color: '#fff',
-    fontSize: 18
-  }
+  // button: {
+  //   margin: 10,
+  //   backgroundColor: '#f6755e',
+  //   padding: 10,
+  //   borderRadius: 4
+  // },
+  // buttonText: {
+  //   ...Font.style('montserrat'),
+  //   color: '#fff',
+  //   fontSize: 18
+  // }
 });
+
+/*
+<TouchableOpacity
+  style={styles.button}
+  onPress={()=>{
+    Share.open(shareImageBase64);
+  }}>
+  <View style={styles.instructions}>
+    <Text style={styles.buttonText}>
+      Share Photo!  <Ionicons name="ios-share-outline" size={18} color="white" />
+    </Text>
+  </View>
+</TouchableOpacity>
+*/
 
 
 //  twitter icon

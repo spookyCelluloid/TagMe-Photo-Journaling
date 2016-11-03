@@ -10,10 +10,10 @@ import {
 } from 'react-native';
 import { Font } from 'exponent';
 import ModalView from './tagsModal';
-import SocialMediaShare from './socialMediaShare';
 import { Container, Header, Title, Content, Footer, Button, Spinner } from 'native-base';
 import { Ionicons } from '@exponent/vector-icons';
-import Geocoder from 'react-native-geocoder';
+import { Geocoder } from 'react-native-geocoder';
+import Share, {ShareSheet} from 'react-native-share';
 
 
 var STORAGE_KEY = 'id_token';
@@ -31,7 +31,6 @@ export default class Memory extends React.Component {
       databaseId: '',
       caption: '',
       savePhoto: false,
-      savePhotoText: 'Save to Library',
       longitude: this.props.longitude,
       latitude: this.props.latitude,
       city: null,
@@ -45,16 +44,6 @@ export default class Memory extends React.Component {
       name: 'Homescreen',
       passProps: {
         'username': this.props.username
-      }
-    });
-  }
-
-  _navigateEdit() {
-    this.props.navigator.push({
-      name: 'Sketch',
-      passProps: {
-        'username': this.props.username,
-        'image': this.state.image
       }
     });
   }
@@ -179,7 +168,7 @@ export default class Memory extends React.Component {
         });
       }
     })
-    
+
     this.getCityName();
   }
 
@@ -225,6 +214,7 @@ export default class Memory extends React.Component {
       lng: this.state.longitude
     };
 
+<<<<<<< HEAD
     await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.lat},${location.lng}&key=${myKey}`, {
       method: 'GET'
     }).then(function(res){
@@ -233,12 +223,46 @@ export default class Memory extends React.Component {
     }).catch(function(err){
       console.log('error with gelocation fetch')
     })
+=======
+   await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.lat},${location.lng}&key=${myKey}`, {
+    method: 'GET'
+   }).then(function(res){
+    var result = JSON.parse(res['_bodyInit'])
+    context.setState({city: result.results[0].address_components[3].long_name, state: result.results[0].address_components[5].short_name})
+   }).catch(function(err){
+    console.log('error with gelocation fetch')
+   })
+>>>>>>> 4c81b8967923d1417d0ea22ce69196ef5ec52fe9
 
   }
 
 
 
   render() {
+
+    let shareOptions = {
+      title: "title test share options",
+      message: this.state.caption,
+      url: this.state.image.uri,
+      subject: "Check out this TageMe photo!" //  for email
+    };
+
+    let shareImageBase64 = {
+      title: 'title test',
+      message: this.state.caption,
+      url: this.state.image.uri,
+      subject: "Check out this TagMe photo!" //  for email
+    };
+
+    var saving = this.state.savePhoto ?
+      <Button primary style={ {backgroundColor: 'transparent', margin: 6} } onPress={this.saveToCameraRoll.bind(this)}>
+        <Ionicons name="ios-download-outline" size={40} color="#5F5E5E" />
+      </Button>
+      :
+      <Button primary style={ {backgroundColor: 'transparent', margin: 6} }>
+        <Ionicons name="ios-download-outline" size={40} color="#D8D3D3" />
+      </Button>
+
     var disabled = false;
     var loading = this.state.status ?
     <ModalView
@@ -250,42 +274,44 @@ export default class Memory extends React.Component {
     : null;
     return (
       <Container style={ {backgroundColor: 'white'} }>
-      <Header>
-      <Button transparent onPress={() => this.props.navigator.pop()}>
-      <Ionicons name="ios-arrow-back" size={32} style={{color: '#25a2c3', marginTop: 5}}/>
-      </Button>
-      <Title style={styles.headerText}>{this.state.date}</Title>
-      <Button transparent onPress={this._navigate.bind(this)}>
-      <Ionicons name="ios-home" size={35} color="#444" />
-      </Button>
-      </Header>
-      <Content
-      contentContainerStyle={
-        {
-          justifyContent: 'center',
-          alignItems: 'center'
-        }
-      }>
-      <Image style={styles.image} resizeMode={Image.resizeMode.contain} source={{uri: this.state.image.uri}}/>
-      <Text style={this.state.city === null ? {display: 'none'} : styles.city}> {`${this.state.city}, ${this.state.state}`} </Text>
-      <Text style={styles.caption}>{this.state.caption}</Text>
-      <MemoryDetails
-      status={this.state.status}
-      tags={this.state.filteredTags}
-      location={this.state.location}
-      />
-      <TouchableOpacity
-      style={this.state.savePhoto ? styles.buttonDisabled : styles.button}
-      activeOpacity={0.3}
-      onPress={this.saveToCameraRoll.bind(this)}
-      disabled={this.state.savePhoto}>
-      <Text style={styles.buttonText}>
-      {this.state.savePhotoText}  <Ionicons name="ios-download-outline" size={18} color="white" />
-      </Text>
-      </TouchableOpacity>
-      <SocialMediaShare Image={this.state}/>
-      {loading}
-      </Content>
+        <Header>
+          <Button transparent onPress={() => this.props.navigator.pop()}>
+            <Ionicons name="ios-arrow-back" size={32} style={{color: '#25a2c3', marginTop: 5}}/>
+          </Button>
+          <Title style={styles.headerText}>{this.state.date}</Title>
+          <Button transparent onPress={this._navigate.bind(this)}>
+            <Ionicons name="ios-home" size={35} color="#444" />
+          </Button>
+        </Header>
+        <Content>
+
+          <Image style={styles.image} resizeMode={Image.resizeMode.contain} source={{uri: this.state.image.uri}}/>
+
+
+          <View style={styles.flexRow}>
+            <Button primary style={ {backgroundColor: 'transparent', margin: 6} } onPress={this.saveToCameraRoll.bind(this)}>
+              <Ionicons name="ios-download-outline" size={40} color="#5F5E5E" />
+            </Button>
+
+            <Button  style={ {backgroundColor: 'transparent', margin: 6} } onPress={()=>{
+                Share.open(shareImageBase64);
+              }}>
+              <Ionicons name="ios-share-outline" size={40} color="#5F5E5E" />
+            </Button>
+
+            {loading}
+          </View>
+
+          <Text style={styles.city}> {`${this.state.city}, ${this.state.state}`} </Text>
+          <Text style={styles.caption}>{this.state.caption}</Text>
+          <MemoryDetails
+            status={this.state.status}
+            tags={this.state.filteredTags}
+            location={this.state.location}
+          />
+
+        </Content>
+
       </Container>
       );
   }
@@ -389,6 +415,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center'
   },
+  flexRow: {
+    margin: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#DBDADA',
+    flexDirection: 'row'
+  },
+
   city: {
     ...Font.style('montserrat')
   }
