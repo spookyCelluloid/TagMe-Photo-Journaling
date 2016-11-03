@@ -1,9 +1,9 @@
 {
-  "name": "memories",
-  "version": "0.0.0",
-  "description": "auto-journal memories",
+  "name": "TagMe",
+  "version": "0.0.1",
+  "description": "ML captions of photos taken in or uploaded to the app",
   "author": null,
-  "private": true,
+  "private": false,
   "main": "main.js",
   "dependencies": {
     "@exponent/vector-icons": "^1.0.4",
