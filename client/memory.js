@@ -147,7 +147,9 @@ export default class Memory extends React.Component {
         status: true,
         databaseId: id,
         date: date,
-        caption: caption
+        caption: caption,
+        longitude: memory.longitude,
+        latitude: memory.latitude
       });
     }).catch(function(err) {
       console.log('ERROR', err);
