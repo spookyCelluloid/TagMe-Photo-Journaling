@@ -34,7 +34,8 @@ export default class Memory extends React.Component {
       longitude: this.props.longitude,
       latitude: this.props.latitude,
       city: null,
-      state: null
+      state: null,
+      visible: false
 
     };
   }
@@ -218,7 +219,7 @@ export default class Memory extends React.Component {
     method: 'GET'
    }).then(function(res){
     var result = JSON.parse(res['_bodyInit'])
-    context.setState({city: result.results[0].address_components[3].long_name, state: result.results[0].address_components[5].short_name})
+    context.setState({city: result.results[0].address_components[3].long_name, state: result.results[0].address_components[5].short_name, visible: true})
    }).catch(function(err){
     console.log('error with gelocation fetch')
    })
@@ -292,7 +293,7 @@ export default class Memory extends React.Component {
             {loading}
           </View>
 
-          <Text style={styles.city}> {`${this.state.city}, ${this.state.state}`} </Text>
+          <Text style={this.state.visible ? styles.city : {color: 'white'}}> {`${this.state.city}, ${this.state.state}`} </Text>
           <Text style={styles.caption}>{this.state.caption}</Text>
           <MemoryDetails
             status={this.state.status}
@@ -413,6 +414,7 @@ const styles = StyleSheet.create({
   },
 
   city: {
-    ...Font.style('montserrat')
+    ...Font.style('montserrat'),
+    color: 'black'
   }
 });
