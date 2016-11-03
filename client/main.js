@@ -23,7 +23,11 @@ class App extends React.Component {
     if (route.name === 'Memories') {
       return <Memories navigator={navigator} {...route.passProps}/>;
     }
-   
+
+    if (route.name === 'Sketch') {
+      return <Sketch navigator={navigator} {...route.passProps}/>;
+    }
+
   }
 
   render() {
