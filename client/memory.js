@@ -15,9 +15,6 @@ import { Container, Header, Title, Content, Footer, Button, Spinner } from 'nati
 import { Ionicons } from '@exponent/vector-icons';
 import { Geocoder } from 'react-native-geocoder';
 import Share, {ShareSheet} from 'react-native-share';
-import PeekPop from './PeekPop';
-import Peekable from './Peekable';
-
 
 var STORAGE_KEY = 'id_token';
 
