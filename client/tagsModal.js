@@ -64,11 +64,8 @@ export default class ModalView extends React.Component {
   render() {
     return (
       <View>
-        <Button onPress={this.setModalVisible.bind(this, true)} style={styles.button}>
-          <Text style={styles.buttonText}>
-            Edit Tags  <Ionicons name="ios-pricetags-outline" size={18} color="white" />
-          </Text>
-        </Button>
+        <Ionicons style={styles.iconButton} onPress={this.setModalVisible.bind(this, true)} name="ios-pricetags-outline" size={37} color="#5F5E5E" />
+
         <Modal
           animationType={'slide'}
           transparent={true}
@@ -107,6 +104,15 @@ export default class ModalView extends React.Component {
     );
   }
 }
+
+/*
+        <Button onPress={this.setModalVisible.bind(this, true)} style={styles.button}>
+          <Text style={styles.buttonText}>
+            Edit Tags  <Ionicons name="ios-pricetags-outline" size={18} color="white" />
+          </Text>
+        </Button>
+
+*/
 
 class Tag extends Component {
   constructor(props) {
@@ -197,5 +203,12 @@ const styles = StyleSheet.create({
 
   tagNotSelected: {
     color: '#25a2c3'
+  },
+
+  iconButton: {
+    backgroundColor: 'transparent',
+    marginLeft: 35,
+    marginTop: 6,
+    marginRight: 35
   }
 });

@@ -6,14 +6,15 @@ import {
   AsyncStorage,
   Image,
   CameraRoll,
-  TouchableOpacity
+  TouchableOpacity,
+  Dimensions
 } from 'react-native';
 import { Font } from 'exponent';
 import ModalView from './tagsModal';
-import SocialMediaShare from './socialMediaShare';
 import { Container, Header, Title, Content, Footer, Button, Spinner } from 'native-base';
 import { Ionicons } from '@exponent/vector-icons';
 import { Geocoder } from 'react-native-geocoder';
+import Share, {ShareSheet} from 'react-native-share';
 
 
 var STORAGE_KEY = 'id_token';
@@ -31,15 +32,16 @@ export default class Memory extends React.Component {
       databaseId: '',
       caption: '',
       savePhoto: false,
-      savePhotoText: 'Save to Library',
       longitude: this.props.longitude,
       latitude: this.props.latitude,
-      cityName: null
+      city: null,
+      state: null,
+      visible: false
 
     };
   }
 
-   _navigate() {
+  _navigate() {
     this.props.navigator.push({
       name: 'Homescreen',
       passProps: {
@@ -53,16 +55,6 @@ export default class Memory extends React.Component {
       name: 'Memories',
       passProps: {
         'username': this.props.username
-      }
-    });
-  }
-
-   _navigateEdit() {
-    this.props.navigator.push({
-      name: 'Sketch',
-      passProps: {
-        'username': this.props.username,
-        'image': this.state.image
       }
     });
   }
@@ -104,26 +96,26 @@ export default class Memory extends React.Component {
     var form = new FormData();
     form.append('memoryImage', photo);
     fetch('https://spooky-tagme.herokuapp.com/api/memories/upload',
+    {
+      body: form,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': 'Bearer ' + token
+      }
+    }).then(function(res) {
+      var databaseId = JSON.parse(res['_bodyInit']);
+      fetch('https://spooky-tagme.herokuapp.com/api/memories/location/' + databaseId,
       {
-        body: form,
+        body: JSON.stringify(location),
         method: 'POST',
         headers: {
-          'Content-Type': 'multipart/form-data',
+          'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + token
         }
-      }).then(function(res) {
-        var databaseId = JSON.parse(res['_bodyInit']);
-        fetch('https://spooky-tagme.herokuapp.com/api/memories/location/' + databaseId,
-          {
-            body: JSON.stringify(location),
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + token
-            }
-          });
-        context.getMemoryData(databaseId, 0);
       });
+      context.getMemoryData(databaseId, 0);
+    });
   }
 
   async getMemoryData(id, pings) {
@@ -187,7 +179,7 @@ export default class Memory extends React.Component {
         });
       }
     })
-    
+
     this.getCityName();
   }
 
@@ -226,13 +218,23 @@ export default class Memory extends React.Component {
   }
 
   async getCityName() {
-    console.log('in get CITY NAME !!!!!!!!!!!!', this.state.latitude, this.state.longitude)
-     Geocoder.geocodePosition({lat: this.state.latitude, lng: this.state.longitude})
-            .then(function(res){
-              console.log('**********', res)
-             this.setState({cityName: res})
-            })
-            .catch(err => console.log(err));
+    var context = this;
+    var myKey = 'AIzaSyBsY6oEKTUuYyJos6jKuvTUT3aDlYKWbts'
+    var location = {
+      lat: this.state.latitude,
+      lng: this.state.longitude
+    };
+
+   await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.lat},${location.lng}&key=${myKey}`, {
+    method: 'GET'
+   }).then(function(res){
+    var result = JSON.parse(res['_bodyInit'])
+    context.setState({city: result.results[0].address_components[3].long_name, state: result.results[0].address_components[5].short_name, visible: true})
+   }).catch(function(err){
+    console.log('error with gelocation fetch')
+   })
+
+
   }
 
 
@@ -271,15 +273,39 @@ export default class Memory extends React.Component {
 
 
   render() {
+
+    let shareOptions = {
+      title: "title test share options",
+      message: this.state.caption,
+      url: this.state.image.uri,
+      subject: "Check out this TageMe photo!" //  for email
+    };
+
+    let shareImageBase64 = {
+      title: 'title test',
+      message: this.state.caption,
+      url: this.state.image.uri,
+      subject: "Check out this TagMe photo!" //  for email
+    };
+
+    var showCity = this.state.visible ?
+      <Text style={styles.city}> {`${this.state.city}, ${this.state.state}`} </Text>
+      : null;
+
+    var saving = this.state.savePhoto ?
+      <Ionicons style={styles.iconButton} name="ios-download-outline" size={40} color="#D8D3D3" />
+      :
+      <Ionicons style={styles.iconButton} onPress={this.saveToCameraRoll.bind(this)} name="ios-download-outline" size={40} color="#5F5E5E" />
+
     var disabled = false;
     var loading = this.state.status ?
-      <ModalView
-        prevScene={this.props.prevScene}
-        tags={this.state.tags}
-        updateTags={this.updateTags.bind(this)}
-        status={this.state.status}
-      />
-      : null;
+    <ModalView
+    prevScene={this.props.prevScene}
+    tags={this.state.tags}
+    updateTags={this.updateTags.bind(this)}
+    status={this.state.status}
+    />
+    : null;
     return (
       <Container style={ {backgroundColor: 'white'} }>
         <Header>
@@ -291,17 +317,22 @@ export default class Memory extends React.Component {
             <Ionicons name="ios-home" size={35} color="#444" />
           </Button>
         </Header>
-        <Content
-          contentContainerStyle={
-            {
-              justifyContent: 'center',
-              alignItems: 'center'
-            }
-          }>
+        <Content>
+
           <Image style={styles.image} resizeMode={Image.resizeMode.contain} source={{uri: this.state.image.uri}}/>
-          <Text> City: {this.state.cityName} </Text>
-          <Text>Longitude: {this.state.longitude}</Text>
-          <Text>Latitude: {this.state.latitude}</Text>
+
+
+          <View style={styles.flexRow}>
+            {saving}
+
+            <Ionicons style={styles.iconButton} onPress={()=>{
+              Share.open(shareImageBase64);
+            }} name="ios-share-outline" size={40} color="#5F5E5E" />
+
+            {loading}
+          </View>
+
+          {showCity}
           <Text style={styles.caption}>{this.state.caption}</Text>
           <MemoryDetails
             status={this.state.status}
@@ -323,8 +354,9 @@ export default class Memory extends React.Component {
           <SocialMediaShare Image={this.state}/>
           {loading}
         </Content>
+
       </Container>
-    );
+      );
   }
 }
 
@@ -335,30 +367,30 @@ class MemoryDetails extends React.Component {
 
   render() {
     var loading = !this.props.status ?
-      <Spinner
-        color='red'
-        animating={true}
-        size='large'
-        style={styles.spinner}>
-      </Spinner>
-      : null;
+    <Spinner
+    color='red'
+    animating={true}
+    size='large'
+    style={styles.spinner}>
+    </Spinner>
+    : null;
     return (
       <View>
-        <View style={styles.tagsContainer}>
-          {
-            this.props.tags.map(tag =>
-              <Button
-                key={tag}
-                style={styles.tag}
-                rounded info>
-                <Text style={styles.tagText}>{tag}</Text>
-              </Button>
-            )
-          }
-        </View>
-        {loading}
+      <View style={styles.tagsContainer}>
+      {
+        this.props.tags.map(tag =>
+          <Button
+          key={tag}
+          style={styles.tag}
+          rounded info>
+          <Text style={styles.tagText}>{tag}</Text>
+          </Button>
+          )
+      }
       </View>
-    );
+      {loading}
+      </View>
+      );
   }
 }
 
@@ -382,7 +414,7 @@ const styles = StyleSheet.create({
   caption: {
     ...Font.style('montserrat'),
     fontSize: 16,
-    textAlign: 'center',
+    // textAlign: 'center',
     margin: 10
   },
 
@@ -398,12 +430,19 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    width: 350,
-    height: 350
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').width
   },
 
   spinner: {
     padding: 100
+  },
+
+  iconButton: {
+    backgroundColor: 'transparent',
+    marginLeft: 35,
+    marginTop: 6,
+    marginRight: 35
   },
 
   button: {
@@ -425,5 +464,20 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     textAlign: 'center'
+  },
+  flexRow: {
+    marginBottom: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#DBDADA',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+
+  city: {
+    ...Font.style('montserrat'),
+    color: 'black',
+    marginLeft:10,
+    fontSize: 18
   }
 });
