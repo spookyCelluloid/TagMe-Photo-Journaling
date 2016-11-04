@@ -7,7 +7,6 @@ import {
   TouchableHighlight,
   CameraRoll,
   Image,
-  ScrollView,
   Dimensions,
   AlertIOS
 } from 'react-native';
