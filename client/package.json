@@ -23,7 +23,8 @@
     "whatwg-fetch": "^1.0.0"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build:ios": "node node_modules/react-native/local-cli/cli.js bundle --entry-file='main.js' --bundle-output='./ios/TagMe/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'"
   },
   "jest": {
     "preset": "jest-exponent",

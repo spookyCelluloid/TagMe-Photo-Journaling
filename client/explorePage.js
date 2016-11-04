@@ -35,21 +35,13 @@ export default class ExplorePage extends React.Component {
     this.fetchMemories();
   }
 
-  async saveToCameraRoll() {
-    console.log('this in saveAll', this.state.imageList);
-    this.state.imageList.map( memory => (
-      CameraRoll.saveToCameraRoll(memory.uri)
-      ))
-  }
-
   _navigate(image) {
     this.props.navigator.push({
       name: 'Memory',
       passProps: {
         'image': {uri: image.uri},
         'id': image.id,
-        'username': this.props.username,
-        'prevScene': 'Memories'
+        'prevScene': 'ExplorePage'
       }
     });
   }
@@ -78,7 +70,12 @@ export default class ExplorePage extends React.Component {
           uri: memory.filePath
         };
       });
-      context.setState({imageList: images});
+      console.log(context);
+      context.setState({
+        imageList: images,
+        searching: true
+      });
+
     });
   }
 
@@ -96,7 +93,7 @@ export default class ExplorePage extends React.Component {
           </Header>
           ) : null
       }
-     
+
       <Content contentContainerStyle={{
         flexWrap: 'wrap',
         flexDirection: 'row',
@@ -109,9 +106,6 @@ export default class ExplorePage extends React.Component {
           ) : null
       }
       </Content>
-      <View>
-      <Button style={styles.saveAll} onPress={this.saveToCameraRoll.bind(this)}><Text style={styles.buttonText}>Save all memories</Text></Button>
-      </View>
       </Container>
       );
   }
