@@ -39,7 +39,6 @@ export default class Memories extends React.Component {
   }
 
   async saveToCameraRoll() {
-    console.log('this in saveAll', this.state.imageList);
     this.state.imageList.map( memory => (
       CameraRoll.saveToCameraRoll(memory.uri)
       ))
@@ -122,7 +121,7 @@ export default class Memories extends React.Component {
     })
   }
 
-  
+
 
   render() {
     return (
