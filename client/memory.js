@@ -122,7 +122,6 @@ export default class Memory extends React.Component {
   }
 
   async getMemoryData(id, pings) {
-    console.log('getMemoryData is called');
     var context = this;
     try {
       var token =  await AsyncStorage.getItem(STORAGE_KEY);
@@ -295,11 +294,9 @@ export default class Memory extends React.Component {
   }
 
   openMap() {
-    var geoLocation = 'http://maps.apple.com/?sll=' + this.state.latitude + ',' + this.state.longitude;
+    var geoLocation = 'http://maps.apple.com/?daddr=' + this.state.latitude + ',' + this.state.longitude;
     Linking.openURL(geoLocation);
   }
-
-
 
   render() {
 
@@ -321,7 +318,7 @@ export default class Memory extends React.Component {
       <Text
         onLongPress={() => this.openMapAlert()}
         style={styles.city}>
-        <Ionicons name="ios-pin-outline" size={20} color="#4A4A4A" /> {`${this.state.city}, ${this.state.state}`}
+        <Ionicons name="ios-pin-outline" size={20} color="#25a2c3" /> {`${this.state.city}, ${this.state.state}`}
       </Text>
       : null;
 
@@ -524,7 +521,7 @@ const styles = StyleSheet.create({
 
   city: {
     ...Font.style('montserrat'),
-    color: 'black',
+    color: '#25a2c3',
     marginLeft:10,
     fontSize: 18
   }
