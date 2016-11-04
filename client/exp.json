@@ -1,22 +1,11 @@
 {
   "name": "TagMe",
-  "description": "ML captions of photos taken in or uploaded to the app",
+  "iconUrl": "http://oi64.tinypic.com/oj1p9f.jpg",
+  "version": "0.0.1",
   "slug": "mythlinmasterdo",
   "sdkVersion": "10.0.0",
-  "version": "0.0.1",
-  "orientation": "portrait",
   "ios": {
     "bundleIdentifier": "com.mythlinmasterdo.exp"
-  },
-  "primaryColor": "#cccccc",
-  "iconUrl": "https://s3-us-west-1.amazonaws.com/spookycelluloid/images/TagMeIcon.png?X-Amz-Date=20161103T225024Z&X-Amz-Expires=300&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Signature=f770b84090edf3156835b5d8e1b7d950f915d2ad5905b3574738f305ef7797af&X-Amz-Credential=ASIAI6XYBTNHPA7L63GA/20161103/us-west-1/s3/aws4_request&X-Amz-SignedHeaders=Host&x-amz-security-token=FQoDYXdzEK7//////////wEaDEdEIIg2AIuhWsLYEiL6ASomVBI7Vj6vJ9Uski8FH6yZIsmHsN7LBU28F7R7p0yJxZBGkGvwyuGkhF%2Bc/HwMBvBoAAJxDjmngTHpAtjmIt3zFcNQM2ahQl%2BDbxOLig0p05VZr3TkVus667%2BrqVYVAj72FP8ubUy/mfkT2HBlsCN9bIdkwOcSOSH6Hd3L/CKoGpvBmDU5PMUdzN%2B2n6KUiamI7bQiuZyEN4WHRAaoM4eJY57By1XyRReM4pMHOwm8iAnOQ7kNHVCNJqqhuf2trS2ln9frSiCALd6j3AAPHGpY3e6KVVgTkqEiwG4NEN/aMtMMuBdMKDIakKNJ483B79scf09MMcCYyTAoyMfuwAU%3D",
-  "notification": {
-    "iconUrl": "https://s3-us-west-1.amazonaws.com/spookycelluloid/images/TagMeIcon.png?X-Amz-Date=20161103T225024Z&X-Amz-Expires=300&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Signature=f770b84090edf3156835b5d8e1b7d950f915d2ad5905b3574738f305ef7797af&X-Amz-Credential=ASIAI6XYBTNHPA7L63GA/20161103/us-west-1/s3/aws4_request&X-Amz-SignedHeaders=Host&x-amz-security-token=FQoDYXdzEK7//////////wEaDEdEIIg2AIuhWsLYEiL6ASomVBI7Vj6vJ9Uski8FH6yZIsmHsN7LBU28F7R7p0yJxZBGkGvwyuGkhF%2Bc/HwMBvBoAAJxDjmngTHpAtjmIt3zFcNQM2ahQl%2BDbxOLig0p05VZr3TkVus667%2BrqVYVAj72FP8ubUy/mfkT2HBlsCN9bIdkwOcSOSH6Hd3L/CKoGpvBmDU5PMUdzN%2B2n6KUiamI7bQiuZyEN4WHRAaoM4eJY57By1XyRReM4pMHOwm8iAnOQ7kNHVCNJqqhuf2trS2ln9frSiCALd6j3AAPHGpY3e6KVVgTkqEiwG4NEN/aMtMMuBdMKDIakKNJ483B79scf09MMcCYyTAoyMfuwAU%3D",
-    "color": "#000000"
-  },
-  "loading": {
-    "iconUrl": "https://s3-us-west-1.amazonaws.com/spookycelluloid/images/TagMeIcon.png?X-Amz-Date=20161103T225024Z&X-Amz-Expires=300&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Signature=f770b84090edf3156835b5d8e1b7d950f915d2ad5905b3574738f305ef7797af&X-Amz-Credential=ASIAI6XYBTNHPA7L63GA/20161103/us-west-1/s3/aws4_request&X-Amz-SignedHeaders=Host&x-amz-security-token=FQoDYXdzEK7//////////wEaDEdEIIg2AIuhWsLYEiL6ASomVBI7Vj6vJ9Uski8FH6yZIsmHsN7LBU28F7R7p0yJxZBGkGvwyuGkhF%2Bc/HwMBvBoAAJxDjmngTHpAtjmIt3zFcNQM2ahQl%2BDbxOLig0p05VZr3TkVus667%2BrqVYVAj72FP8ubUy/mfkT2HBlsCN9bIdkwOcSOSH6Hd3L/CKoGpvBmDU5PMUdzN%2B2n6KUiamI7bQiuZyEN4WHRAaoM4eJY57By1XyRReM4pMHOwm8iAnOQ7kNHVCNJqqhuf2trS2ln9frSiCALd6j3AAPHGpY3e6KVVgTkqEiwG4NEN/aMtMMuBdMKDIakKNJ483B79scf09MMcCYyTAoyMfuwAU%3D",
-    "hideExponentText": false
   },
   "packagerOpts": {
     "assetExts": ["ttf", "mp4"]
