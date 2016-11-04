@@ -7,7 +7,9 @@ import {
   Image,
   CameraRoll,
   TouchableOpacity,
-  Dimensions
+  Dimensions,
+  AlertIOS,
+  Linking
 } from 'react-native';
 import { Font } from 'exponent';
 import ModalView from './tagsModal';
@@ -36,7 +38,6 @@ export default class Memory extends React.Component {
       city: null,
       state: null,
       visible: false
-
     };
   }
 
@@ -269,7 +270,32 @@ export default class Memory extends React.Component {
     });
   }
 
+  deleteAlert() {
+    AlertIOS.alert(
+      'Delete Photo',
+      'Are you sure you want to delete this photo?',
+      [
+        {text: 'Yes', onPress: () => this.deletePhoto()},
+        {text: 'No'}
+      ]
+    )
+  }
 
+  openMapAlert() {
+    AlertIOS.alert(
+      'Open Map',
+      'You want to see where this photo is taken?',
+      [
+        {text: 'Yes', onPress: () => this.openMap()},
+        {text: 'No'}
+      ]
+    )
+  }
+
+  openMap() {
+    var geoLocation = 'http://maps.apple.com/?sll=' + this.state.latitude + ',' + this.state.longitude;
+    Linking.openURL(geoLocation);
+  }
 
 
   render() {
@@ -289,7 +315,11 @@ export default class Memory extends React.Component {
     };
 
     var showCity = this.state.visible ?
-      <Text style={styles.city}> {`${this.state.city}, ${this.state.state}`} </Text>
+      <Text
+        onLongPress={() => this.openMapAlert()}
+        style={styles.city}>
+        <Ionicons name="ios-pin-outline" size={20} color="#4A4A4A" /> {`${this.state.city}, ${this.state.state}`}
+      </Text>
       : null;
 
     var saving = this.state.savePhoto ?
@@ -331,7 +361,7 @@ export default class Memory extends React.Component {
 
             {loading}
 
-            <Ionicons style={styles.iconButton} onPress={this.deletePhoto.bind(this)}
+            <Ionicons style={styles.iconButton} onPress={this.deleteAlert.bind(this)}
               name="ios-trash-outline" size={40} color="#5F5E5E" />
           </View>
 
