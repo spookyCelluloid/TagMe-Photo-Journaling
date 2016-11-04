@@ -54,16 +54,6 @@ export default class ExplorePage extends React.Component {
     });
   }
 
-  _navigateHome() {
-    this.props.navigator.push({
-      name: 'Homescreen',
-      passProps: {
-        'username': this.props.username
-      }
-    });
-  }
-
-
   async fetchMemories() {
     var context = this;
     this.setState({searching: false});
