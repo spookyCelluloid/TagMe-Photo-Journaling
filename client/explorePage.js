@@ -78,34 +78,16 @@ export default class ExplorePage extends React.Component {
     this.fetchMemories();
   }
 
-  async saveToCameraRoll() {
-    console.log('this in saveAll', this.state.imageList);
-    this.state.imageList.map( memory => (
-      CameraRoll.saveToCameraRoll(memory.uri)
-      ))
-  }
-
   _navigate(image) {
     this.props.navigator.push({
       name: 'Memory',
       passProps: {
         'image': {uri: image.uri},
         'id': image.id,
-        'username': this.props.username,
-        'prevScene': 'Memories'
+        'prevScene': 'ExplorePage'
       }
     });
   }
-
-  _navigateHome() {
-    this.props.navigator.push({
-      name: 'Homescreen',
-      passProps: {
-        'username': this.props.username
-      }
-    });
-  }
-
 
   async fetchMemories() {
     var context = this;
@@ -125,14 +107,18 @@ export default class ExplorePage extends React.Component {
     .then(function(memories) {
 
       var memoryArray = JSON.parse(memories['_bodyInit']);
-      console.log('front end memories', memoryArray)
       var images = memoryArray.map(memory => {
         return {
           id: memory._id,
           uri: memory.filePath
         };
       });
-      context.setState({imageList: images});
+      console.log(context);
+      context.setState({
+        imageList: images,
+        searching: true
+      });
+
     });
   }
 
@@ -177,31 +163,21 @@ export default class ExplorePage extends React.Component {
           </Header>
           ) : null
       }
-     
+
       <Content contentContainerStyle={{
         flexWrap: 'wrap',
         flexDirection: 'row',
         alignItems: 'center'
       }}>
       {
-        this.state.searching ? (
-          this.state.queryList.map(image =>
-            <TouchableHighlight onPress={this._navigate.bind(this, image)}  >
-            <Image style={styles.thumbnail} resizeMode={Image.resizeMode.cover} source={{uri: image.uri}}/>
-            </TouchableHighlight>
-            )
-          )
-        :
+        this.state.imageList.length > 0 ?
         this.state.imageList.map(image =>
-          <TouchableHighlight key={image.id} onLongPress={this.explore.bind(this)} onPress={this._navigate.bind(this, image)}>
+          <TouchableHighlight key={image.id} onPress={this._navigate.bind(this, image)}>
           <Image style={styles.thumbnail} resizeMode={Image.resizeMode.cover} source={{uri: image.uri}}/>
           </TouchableHighlight>
-          )
+          ) : null
       }
       </Content>
-      <View>
-      <Button style={styles.saveAll} onPress={this.saveToCameraRoll.bind(this)}><Text style={styles.buttonText}>Save all memories</Text></Button>
-      </View>
       </Container>
       );
   }
