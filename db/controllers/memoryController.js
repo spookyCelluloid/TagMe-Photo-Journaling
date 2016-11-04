@@ -150,8 +150,6 @@ exports.storeTags = function(req, res) {
 
 exports.storeLocation = function(req, res) {
   // If there is no JSON body, return 400
-  console.log('POST /api/memories/location/*. username:', req.user.username);
-  console.log('POST /api/memories/location/*. location:', req.body.longitude, req.body.latitude);
   if (!req.body || !req.body.latitude) {
     return res.sendStatus(400);
   }
@@ -182,7 +180,6 @@ exports.searchMemories = function(req, res) {
   var searchTerm = req.params.query;
   searchTerm = searchTerm.replace('_', ' ');
   User.findOne({username: req.user.username}).populate('memories').then(function(user) {
-    console.log('user', user);
     var memsWithTags = user.memories.filter(function(memory) {
       var found = false;
 
