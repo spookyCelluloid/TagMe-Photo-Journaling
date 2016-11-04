@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
   StyleSheet,
   AsyncStorage,
@@ -15,9 +15,9 @@ import { Font } from 'exponent';
 import { Container, Header, Title, Content, Footer, InputGroup, Input, Button } from 'native-base';
 import { Ionicons } from '@exponent/vector-icons';
 
-var STORAGE_KEY = 'id_token';
+const STORAGE_KEY = 'id_token';
 
-export default class ExplorePage extends React.Component {
+export default class ExplorePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -46,7 +46,7 @@ export default class ExplorePage extends React.Component {
   }
 
   async fetchMemories() {
-    var context = this;
+    const context = this;
     this.setState({searching: false});
     try {
       var token =  await AsyncStorage.getItem(STORAGE_KEY);
@@ -57,19 +57,19 @@ export default class ExplorePage extends React.Component {
     fetch(`https://spooky-tagme.herokuapp.com/api/memories/allTagMemories/${this.props.tag}`, {
       method: 'GET',
       headers: {
-        'Authorization': 'Bearer ' + token
+        'Authorization': `Bearer ${token}`
       }
     })
-    .then(function(memories) {
+    .then((memories) => {
 
-      var memoryArray = JSON.parse(memories['_bodyInit']);
-      var images = memoryArray.map(memory => {
+      const memoryArray = JSON.parse(memories['_bodyInit']);
+      const images = memoryArray.map(memory => {
         return {
           id: memory._id,
           uri: memory.filePath
         };
       });
-      console.log(context);
+
       context.setState({
         imageList: images,
         searching: true
@@ -81,30 +81,30 @@ export default class ExplorePage extends React.Component {
   render() {
     return (
       <Container style={ {backgroundColor: 'white'} }>
-      {
-        this.state.fontLoaded ? (
-          <Header>
-          <Button transparent onPress={() => this.props.navigator.pop()}>
-          <Ionicons name="ios-arrow-back" size={32} style={{color: '#25a2c3', marginTop: 5}}/>
-          </Button>
-          <Title style={styles.headerText}>{this.props.tag}</Title>
+        {
+          this.state.fontLoaded ? (
+            <Header>
+            <Button transparent onPress={() => this.props.navigator.pop()}>
+            <Ionicons name="ios-arrow-back" size={32} style={{color: '#25a2c3', marginTop: 5}}/>
+            </Button>
+            <Title style={styles.headerText}>{this.props.tag}</Title>
 
-          </Header>
-          ) : null
-      }
+            </Header>
+            ) : null
+        }
 
-      <Content contentContainerStyle={{
-        flexWrap: 'wrap',
-        flexDirection: 'row',
-        alignItems: 'center'
-      }}>
-      {this.state.imageList.length > 0 ? this.state.imageList.map(image =>
-          <TouchableHighlight key={image.id} onPress={this._navigate.bind(this, image)}>
-          <Image style={styles.thumbnail} resizeMode={Image.resizeMode.cover} source={{uri: image.uri}}/>
-          </TouchableHighlight>
-          ) : null
-      }
-      </Content>
+        <Content contentContainerStyle={{
+          flexWrap: 'wrap',
+          flexDirection: 'row',
+          alignItems: 'center'
+        }}>
+          {this.state.imageList.length > 0 ? this.state.imageList.map(image =>
+              <TouchableHighlight key={image.id} onPress={this._navigate.bind(this, image)}>
+              <Image style={styles.thumbnail} resizeMode={Image.resizeMode.cover} source={{uri: image.uri}}/>
+              </TouchableHighlight>
+              ) : null
+          }
+        </Content>
       </Container>
       );
   }
@@ -118,28 +118,10 @@ const styles = StyleSheet.create({
     paddingTop: 25
   },
 
-  saveAll: {
-    width: 200,
-    marginLeft: 2,
-    backgroundColor: '#f6755e',
-    padding: 10,
-    borderRadius: 4,
-    position: 'absolute',
-    bottom: 2,
-    left: 0
-  },
-
   thumbnail: {
     width: (Dimensions.get('window').width- 8) / 4,
     height: (Dimensions.get('window').width- 8) / 4,
     margin: 1,
     backgroundColor: '#EBEBEB'
-  },
-
-  buttonText: {
-    ...Font.style('montserrat'),
-    color: '#fff',
-    fontSize: 18,
-    textAlign: 'center'
   }
 });
