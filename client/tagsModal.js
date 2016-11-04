@@ -10,8 +10,7 @@ import { Font } from 'exponent';
 import { Container, Content, Button } from 'native-base';
 import { Ionicons } from '@exponent/vector-icons';
 
-export default class ModalView extends React.Component {
-
+export default class ModalView extends Component {
   constructor(props) {
     super(props);
     this.state = {

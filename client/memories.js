@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
   StyleSheet,
   AsyncStorage,
@@ -14,14 +14,14 @@ import { Font } from 'exponent';
 import { Container, Header, Title, Content, InputGroup, Input, Button } from 'native-base';
 import { Ionicons } from '@exponent/vector-icons';
 
-var STORAGE_KEY = 'id_token';
+const STORAGE_KEY = 'id_token';
 
-export default class Memories extends React.Component {
+export default class Memories extends Component {
   constructor(props) {
     super(props);
     this.state = {
       image: {},
-      imageList: [],
+      images: [],
       queryList: [],
       fontLoaded: false,
       searchQuery: '',
@@ -38,7 +38,7 @@ export default class Memories extends React.Component {
   }
 
   async saveToCameraRoll() {
-    this.state.imageList.map( memory => (
+    this.state.images.map( memory => (
       CameraRoll.saveToCameraRoll(memory.uri)
       ))
   }
@@ -67,7 +67,7 @@ export default class Memories extends React.Component {
 
 
   async fetchMemories() {
-    var context = this;
+    const context = this;
     this.setState({searching: false});
     try {
       var token =  await AsyncStorage.getItem(STORAGE_KEY);
@@ -78,7 +78,7 @@ export default class Memories extends React.Component {
     fetch('https://spooky-tagme.herokuapp.com/api/memories/all', {
       method: 'GET',
       headers: {
-        'Authorization': 'Bearer ' + token
+        'Authorization': `Bearer ${token}`
       }
     })
     .then(function(memories) {
@@ -89,12 +89,12 @@ export default class Memories extends React.Component {
           uri: memory.filePath
         };
       });
-      context.setState({imageList: images});
+      context.setState({images});
     });
   }
 
   async search() {
-    var context = this;
+    const context = this;
     try {
       var token =  await AsyncStorage.getItem(STORAGE_KEY);
     } catch (error) {
@@ -172,7 +172,7 @@ export default class Memories extends React.Component {
             )
           )
         :
-        this.state.imageList.map(image =>
+        this.state.images.map(image =>
           <TouchableHighlight key={image.id}  onPress={this._navigate.bind(this, image)}>
           <Image style={styles.thumbnail} resizeMode={Image.resizeMode.cover} source={{uri: image.uri}}/>
           </TouchableHighlight>

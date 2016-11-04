@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
   StyleSheet,
   Text,
@@ -14,7 +14,7 @@ import { Ionicons } from '@exponent/vector-icons';
 
 var STORAGE_KEY = 'id_token';
 
-export default class Login extends React.Component {
+export default class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -35,9 +35,7 @@ export default class Login extends React.Component {
   _navigate(username) {
     this.props.navigator.push({
       name: 'Homescreen',
-      passProps: {
-        'username': username
-      }
+      passProps: {username}
     })
   }
 
@@ -51,7 +49,7 @@ export default class Login extends React.Component {
   }
 
   login() {
-    var context = this;
+    const context = this;
 
     if (this.state.username && this.state.password) {
       fetch('https://spooky-tagme.herokuapp.com/api/users/login', {
@@ -83,7 +81,7 @@ export default class Login extends React.Component {
   }
 
   signup() {
-    var context = this;
+    const context = this;
 
     if (this.state.username && this.state.password) {
       fetch('https://spooky-tagme.herokuapp.com/api/users/signup', {
