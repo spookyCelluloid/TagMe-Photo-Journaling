@@ -11,7 +11,7 @@ import {
   AlertIOS
 } from 'react-native';
 import { Font } from 'exponent';
-import { Container, Header, Title, Content, Footer, InputGroup, Input, Button } from 'native-base';
+import { Container, Header, Title, Content, InputGroup, Input, Button } from 'native-base';
 import { Ionicons } from '@exponent/vector-icons';
 
 var STORAGE_KEY = 'id_token';
