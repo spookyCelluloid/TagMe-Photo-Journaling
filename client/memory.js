@@ -299,7 +299,7 @@ export default class Memory extends React.Component {
     Linking.openURL(geoLocation);
   }
 
- 
+
 
   render() {
 
@@ -331,7 +331,7 @@ export default class Memory extends React.Component {
       <Ionicons style={styles.iconButton} onPress={this.saveToCameraRoll.bind(this)} name="ios-download-outline" size={40} color="#5F5E5E" />
 
     var disabled = false;
-    var loading = this.state.status ?
+    var loading = (this.state.status && this.props.prevScene !== 'ExplorePage') ?
     <ModalView
     prevScene={this.props.prevScene}
     tags={this.state.tags}
@@ -346,9 +346,13 @@ export default class Memory extends React.Component {
             <Ionicons name="ios-arrow-back" size={32} style={{color: '#25a2c3', marginTop: 5}}/>
           </Button>
           <Title style={styles.headerText}>{this.state.date}</Title>
-          <Button transparent onPress={this._navigate.bind(this)}>
-            <Ionicons name="ios-home" size={35} color="#444" />
-          </Button>
+          {
+            this.props.prevScene !== 'ExplorePage' ?
+            <Button transparent onPress={this._navigate.bind(this)}>
+              <Ionicons name="ios-home" size={35} color="#444" />
+            </Button>
+            :null
+          }
         </Header>
         <Content>
 
@@ -364,8 +368,12 @@ export default class Memory extends React.Component {
 
             {loading}
 
-            <Ionicons style={styles.iconButton} onPress={this.deleteAlert.bind(this)}
+            {
+              this.props.prevScene !== 'ExplorePage' ?
+              <Ionicons style={styles.iconButton} onPress={this.deleteAlert.bind(this)}
               name="ios-trash-outline" size={40} color="#5F5E5E" />
+              :null
+            }
           </View>
 
           {showCity}
