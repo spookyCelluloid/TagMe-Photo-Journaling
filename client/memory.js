@@ -394,11 +394,11 @@ class MemoryDetails extends React.Component {
     super(props);
   }
 
-   explore() {
-   AlertIOS.alert('it works')
+  explore() {
+    AlertIOS.alert('it works')
   }
 
-    _navigateExplore(key) {
+  _navigateExplore(key) {
     this.props.navigator.push({
       name: 'ExplorePage',
       passProps: {

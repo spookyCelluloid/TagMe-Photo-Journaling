@@ -14,7 +14,7 @@ import { Font } from 'exponent';
 import { Container, Header, Title, Content, Footer, Button } from 'native-base';
 import { Ionicons } from '@exponent/vector-icons';
 
-var STORAGE_KEY = 'id_token';
+const STORAGE_KEY = 'id_token';
 
 export default class Homescreen extends React.Component {
   constructor(props) {
@@ -22,7 +22,6 @@ export default class Homescreen extends React.Component {
     this.state = {
       fontLoaded: false,
       initialPosition: null
-
     }
   }
 
@@ -42,7 +41,6 @@ export default class Homescreen extends React.Component {
       console.log('AsyncStorage error: ' + error.message);
     }
   }
-
 
   _navigate(sceneName, imageUri, location) {
     this.props.navigator.push({
@@ -97,8 +95,8 @@ export default class Homescreen extends React.Component {
       if (!image.cancelled) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
-            var initialPosition = JSON.stringify(position);
-            var location = {longitude: position.coords.longitude, latitude: position.coords.latitude}
+            const initialPosition = JSON.stringify(position);
+            const location = {longitude: position.coords.longitude, latitude: position.coords.latitude}
             this._navigate('Memory', image.uri, location);
           },
           (error) => alert(JSON.stringify(error)),
@@ -106,7 +104,7 @@ export default class Homescreen extends React.Component {
         );
 
       }
-       // this._navigate('Memory', image.uri, this.state.initialPosition);
+ 
     });
   }
 
