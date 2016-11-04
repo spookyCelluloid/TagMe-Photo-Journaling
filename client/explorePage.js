@@ -21,7 +21,6 @@ export default class ExplorePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      image: {},
       imageList: [],
       fontLoaded: false
     };

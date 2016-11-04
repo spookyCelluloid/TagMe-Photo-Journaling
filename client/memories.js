@@ -120,8 +120,6 @@ export default class Memories extends React.Component {
     })
   }
 
-
-
   render() {
     return (
       <Container style={ {backgroundColor: 'white'} }>
