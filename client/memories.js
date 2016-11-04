@@ -8,7 +8,8 @@ import {
   CameraRoll,
   Image,
   ScrollView,
-  Dimensions
+  Dimensions,
+  AlertIOS
 } from 'react-native';
 import { Font } from 'exponent';
 import { Container, Header, Title, Content, Footer, InputGroup, Input, Button } from 'native-base';
@@ -38,10 +39,9 @@ export default class Memories extends React.Component {
   }
 
   async saveToCameraRoll() {
-    console.log('this in saveAll', this.state.imageList);
     this.state.imageList.map( memory => (
       CameraRoll.saveToCameraRoll(memory.uri)
-    ))
+      ))
   }
 
   _navigate(image) {
@@ -64,6 +64,8 @@ export default class Memories extends React.Component {
       }
     });
   }
+
+
 
   async fetchMemories() {
     var context = this;
@@ -119,68 +121,70 @@ export default class Memories extends React.Component {
     })
   }
 
+
+
   render() {
     return (
       <Container style={ {backgroundColor: 'white'} }>
-          {
-            this.state.fontLoaded ? (
+      {
+        this.state.fontLoaded ? (
           <Header>
-            <Button transparent onPress={() => this.props.navigator.pop()}>
-              <Ionicons name="ios-arrow-back" size={32} style={{color: '#25a2c3', marginTop: 5}}/>
-            </Button>
-            <Button transparent onPress={this._navigateHome.bind(this)}>
-              <Ionicons name="ios-home" size={35} color="#444" />
-            </Button>
-            <Title style={styles.headerText}>{this.props.username}</Title>
+          <Button transparent onPress={() => this.props.navigator.pop()}>
+          <Ionicons name="ios-arrow-back" size={32} style={{color: '#25a2c3', marginTop: 5}}/>
+          </Button>
+          <Button transparent onPress={this._navigateHome.bind(this)}>
+          <Ionicons name="ios-home" size={35} color="#444" />
+          </Button>
+          <Title style={styles.headerText}>{this.props.username}</Title>
           </Header>
-            ) : null
-          }
-          <View style={{flexDirection: 'row', margin: 10}}>
-            <InputGroup borderType='rounded' style={{width: 250}}>
-                <Input
-                  placeholder='Search'
-                  onChangeText={(text) => this.setState({searchQuery: text})}
-                  value={this.state.searchQuery}
-                />
-            </InputGroup>
-            <Button rounded style={{backgroundColor: '#25a2c3', marginLeft: 5}} onPress={this.search.bind(this)}>
-              <Ionicons name='ios-search' size={25} color="#fff"/>
-            </Button>
-            {
-                this.state.searching ? (
-                  <Button rounded bordered style={{borderColor: '#ccc', marginLeft: 5}}
-                          onPress={this.fetchMemories.bind(this)}>
-                    <Text style={{color: '#444'}}>Cancel</Text>
-                  </Button>
-              ) : null
-            }
-          </View>
-            <Content contentContainerStyle={{
-              flexWrap: 'wrap',
-              flexDirection: 'row',
-              alignItems: 'center'
-            }}>
-              {
-                this.state.searching ? (
-                  this.state.queryList.map(image =>
-                    <TouchableHighlight onPress={this._navigate.bind(this, image)}>
-                      <Image style={styles.thumbnail} resizeMode={Image.resizeMode.cover} source={{uri: image.uri}}/>
-                    </TouchableHighlight>
-                  )
-                )
-                :
-                this.state.imageList.map(image =>
-                  <TouchableHighlight key={image.id} onPress={this._navigate.bind(this, image)}>
-                    <Image style={styles.thumbnail} resizeMode={Image.resizeMode.cover} source={{uri: image.uri}}/>
-                  </TouchableHighlight>
-                )
-              }
-            </Content>
-        <View>
-          <Button style={styles.saveAll} onPress={this.saveToCameraRoll.bind(this)}><Text style={styles.buttonText}>Save all memories</Text></Button>
-        </View>
+          ) : null
+      }
+      <View style={{flexDirection: 'row', margin: 10}}>
+      <InputGroup borderType='rounded' style={{width: 250}}>
+      <Input
+      placeholder='Search'
+      onChangeText={(text) => this.setState({searchQuery: text})}
+      value={this.state.searchQuery}
+      />
+      </InputGroup>
+      <Button rounded style={{backgroundColor: '#25a2c3', marginLeft: 5}} onPress={this.search.bind(this)}>
+      <Ionicons name='ios-search' size={25} color="#fff"/>
+      </Button>
+      {
+        this.state.searching ? (
+          <Button rounded bordered style={{borderColor: '#ccc', marginLeft: 5}}
+          onPress={this.fetchMemories.bind(this)}>
+          <Text style={{color: '#444'}}>Cancel</Text>
+          </Button>
+          ) : null
+      }
+      </View>
+      <Content contentContainerStyle={{
+        flexWrap: 'wrap',
+        flexDirection: 'row',
+        alignItems: 'center'
+      }}>
+      {
+        this.state.searching ? (
+          this.state.queryList.map(image =>
+            <TouchableHighlight onPress={this._navigate.bind(this, image)}  >
+            <Image style={styles.thumbnail} resizeMode={Image.resizeMode.cover} source={{uri: image.uri}}/>
+            </TouchableHighlight>
+            )
+          )
+        :
+        this.state.imageList.map(image =>
+          <TouchableHighlight key={image.id}  onPress={this._navigate.bind(this, image)}>
+          <Image style={styles.thumbnail} resizeMode={Image.resizeMode.cover} source={{uri: image.uri}}/>
+          </TouchableHighlight>
+          )
+      }
+      </Content>
+      <View>
+      <Button style={styles.saveAll} onPress={this.saveToCameraRoll.bind(this)}><Text style={styles.buttonText}>Save all memories</Text></Button>
+      </View>
       </Container>
-    );
+      );
   }
 }
 
@@ -206,7 +210,8 @@ const styles = StyleSheet.create({
   thumbnail: {
     width: (Dimensions.get('window').width- 8) / 4,
     height: (Dimensions.get('window').width- 8) / 4,
-    margin: 1
+    margin: 1,
+    backgroundColor: '#EBEBEB'
   },
 
   buttonText: {

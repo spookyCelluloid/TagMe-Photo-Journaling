@@ -223,7 +223,8 @@ const styles = StyleSheet.create({
   },
 
   choiceButtonText: {
-    fontSize: 22
+    fontSize: 22,
+
   },
 
   takePhotoButtonText: {

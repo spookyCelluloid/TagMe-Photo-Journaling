@@ -216,6 +216,17 @@ exports.searchMemories = function(req, res) {
   });
 };
 
+exports.searchAllTags = function(req, res){
+  Memory.find({
+    tags: req.params.query
+  }).then(function(memories) {
+    res.status(200).send(memories)
+  }).catch(function(err){
+    console.log('err with searching for tags');
+    res.status(404).send('error');
+  })
+}
+
 exports.deleteOne = function(req, res) {
   Memory.findOne({_id: req.body.id})
     .then(function(memory) {

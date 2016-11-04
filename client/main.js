@@ -4,6 +4,7 @@ import Login from './login';
 import Homescreen from './homescreen';
 import Memory from './memory';
 import Memories from './memories';
+import ExplorePage from './explorePage';
 import {
   Navigator
 } from 'react-native';
@@ -21,6 +22,9 @@ class App extends React.Component {
     }
     if (route.name === 'Memories') {
       return <Memories navigator={navigator} {...route.passProps}/>;
+    }
+    if (route.name === 'ExplorePage') {
+      return <ExplorePage navigator={navigator} {...route.passProps}/>;
     }
   }
 

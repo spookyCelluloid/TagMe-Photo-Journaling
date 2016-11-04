@@ -10,7 +10,6 @@ var storage = multer.diskStorage({
     cb(null, 'uploads/');
   },
   filename: function (req, file, cb) {
-    console.log('the original file name is', file);
     cb(null, file.originalname);
   }
 });
@@ -45,5 +44,8 @@ router.route('/search/:query').get(memoryController.searchMemories);
 
 // User deletes a photo
 router.route('/delete/:id').post(jsonParser, memoryController.deleteOne);
+
+//searches for all memories with a given tag
+router.route('/allTagMemories/:query').get(memoryController.searchAllTags);
 
 module.exports = router;
