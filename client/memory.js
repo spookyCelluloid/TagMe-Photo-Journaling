@@ -7,7 +7,8 @@ import {
   Image,
   CameraRoll,
   TouchableOpacity,
-  Dimensions
+  Dimensions,
+  AlertIOS
 } from 'react-native';
 import { Font } from 'exponent';
 import ModalView from './tagsModal';
@@ -36,7 +37,6 @@ export default class Memory extends React.Component {
       city: null,
       state: null,
       visible: false
-
     };
   }
 
@@ -269,7 +269,16 @@ export default class Memory extends React.Component {
     });
   }
 
-
+  deleteAlert() {
+    AlertIOS.alert(
+      'Delete Photo',
+      'Are you sure you want to delete this photo?',
+      [
+        {text: 'Yes', onPress: () => this.deletePhoto()},
+        {text: 'No'}
+      ]
+    )
+  }
 
 
   render() {
@@ -331,7 +340,7 @@ export default class Memory extends React.Component {
 
             {loading}
 
-            <Ionicons style={styles.iconButton} onPress={this.deletePhoto.bind(this)}
+            <Ionicons style={styles.iconButton} onPress={this.deleteAlert.bind(this)}
               name="ios-trash-outline" size={40} color="#5F5E5E" />
           </View>
 
