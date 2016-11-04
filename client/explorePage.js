@@ -1,39 +1,3 @@
-// import React, { Component } from 'react';
-
-// import {
-//   StyleSheet,
-//   Text,
-//   View,
-//   Image,
-//   AsyncStorage,
-//   StatusBar
-// } from 'react-native';
-// import { Font } from 'exponent';
-// import { Container, Header, Title, Content, Footer, InputGroup, Input, Button } from 'native-base';
-// import { Ionicons } from '@exponent/vector-icons';
-
-// var STORAGE_KEY = 'id_token';
-
-// export default class ExplorePage extends React.Component {
-
-//   render() {
-//     return (
-//       <Container >
-//         <View>
-//           <Text> You have</Text>
-//           <Text> made it to </Text>
-//           <Text> the Explore Page </Text>
-//         </View>
-//       </Container>
-//     )
-//   }
-// }
-
-// const styles = StyleSheet.create({
-
-// });
-
-
 import React from 'react';
 import {
   StyleSheet,
@@ -59,16 +23,9 @@ export default class ExplorePage extends React.Component {
     this.state = {
       image: {},
       imageList: [],
-      queryList: [],
-      fontLoaded: false,
-      searchQuery: '',
-      searching: false
+      fontLoaded: false
     };
-
-    console.log('***************', this.props.tag)
   }
-
-
 
   async componentDidMount() {
     await Font.loadAsync({
@@ -122,33 +79,6 @@ export default class ExplorePage extends React.Component {
     });
   }
 
-  async search() {
-    var context = this;
-    try {
-      var token =  await AsyncStorage.getItem(STORAGE_KEY);
-    } catch (error) {
-      console.log('AsyncStorage error: ' + error.message);
-    }
-    fetch('https://spooky-tagme.herokuapp.com/api/memories/search/' + this.state.searchQuery.toLowerCase(), {
-      method: 'GET',
-      headers: {
-        'Authorization': 'Bearer ' + token
-      }
-    }).then(function(memories) {
-      var memoryArray = JSON.parse(memories['_bodyInit']);
-      var images = memoryArray.map(memory => {
-        return {
-          id: memory._id,
-          uri: memory.filePath
-        };
-      });
-      context.setState({
-        queryList: images,
-        searching: true,
-        searchQuery: ''});
-    })
-  }
-
   render() {
     return (
       <Container style={ {backgroundColor: 'white'} }>
@@ -169,9 +99,7 @@ export default class ExplorePage extends React.Component {
         flexDirection: 'row',
         alignItems: 'center'
       }}>
-      {
-        this.state.imageList.length > 0 ?
-        this.state.imageList.map(image =>
+      {this.state.imageList.length > 0 ? this.state.imageList.map(image =>
           <TouchableHighlight key={image.id} onPress={this._navigate.bind(this, image)}>
           <Image style={styles.thumbnail} resizeMode={Image.resizeMode.cover} source={{uri: image.uri}}/>
           </TouchableHighlight>
