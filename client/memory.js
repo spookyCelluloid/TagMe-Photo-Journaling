@@ -60,6 +60,8 @@ export default class Memory extends React.Component {
     this.props.navigator.pop();
   }
 
+
+
   async componentDidMount() {
     await Font.loadAsync({
       'pacifico': require('./assets/fonts/Pacifico.ttf'),
@@ -297,6 +299,7 @@ export default class Memory extends React.Component {
     Linking.openURL(geoLocation);
   }
 
+ 
 
   render() {
 
@@ -368,6 +371,7 @@ export default class Memory extends React.Component {
           {showCity}
           <Text style={styles.caption}>{this.state.caption}</Text>
           <MemoryDetails
+            navigator={this.props.navigator}
             status={this.state.status}
             tags={this.state.filteredTags}
             location={this.state.location}
@@ -385,6 +389,20 @@ class MemoryDetails extends React.Component {
     super(props);
   }
 
+   explore() {
+   AlertIOS.alert('it works')
+  }
+
+    _navigateExplore(key) {
+    this.props.navigator.push({
+      name: 'ExplorePage',
+      passProps: {
+        'tag': key
+      }
+    });
+  }
+
+
   render() {
     var loading = !this.props.status ?
     <Spinner
@@ -401,6 +419,7 @@ class MemoryDetails extends React.Component {
           this.props.tags.map(tag =>
             <Button
             key={tag}
+            onLongPress={this._navigateExplore.bind(this, tag)}
             style={styles.tag}
             rounded info>
             <Text style={styles.tagText}>{tag}</Text>
