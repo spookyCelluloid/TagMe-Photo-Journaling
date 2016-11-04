@@ -210,7 +210,8 @@ const styles = StyleSheet.create({
   thumbnail: {
     width: (Dimensions.get('window').width- 8) / 4,
     height: (Dimensions.get('window').width- 8) / 4,
-    margin: 1
+    margin: 1,
+    backgroundColor: '#EBEBEB'
   },
 
   buttonText: {
