@@ -122,7 +122,6 @@ export default class Memory extends React.Component {
   }
 
   async getMemoryData(id, pings) {
-    console.log('getMemoryData is called');
     var context = this;
     try {
       var token =  await AsyncStorage.getItem(STORAGE_KEY);
@@ -295,11 +294,9 @@ export default class Memory extends React.Component {
   }
 
   openMap() {
-    var geoLocation = 'http://maps.apple.com/?sll=' + this.state.latitude + ',' + this.state.longitude;
+    var geoLocation = 'http://maps.apple.com/?daddr=' + this.state.latitude + ',' + this.state.longitude;
     Linking.openURL(geoLocation);
   }
-
- 
 
   render() {
 
@@ -321,7 +318,7 @@ export default class Memory extends React.Component {
       <Text
         onLongPress={() => this.openMapAlert()}
         style={styles.city}>
-        <Ionicons name="ios-pin-outline" size={20} color="#4A4A4A" /> {`${this.state.city}, ${this.state.state}`}
+        <Ionicons name="ios-pin-outline" size={20} color="#25a2c3" /> {`${this.state.city}, ${this.state.state}`}
       </Text>
       : null;
 
@@ -331,7 +328,7 @@ export default class Memory extends React.Component {
       <Ionicons style={styles.iconButton} onPress={this.saveToCameraRoll.bind(this)} name="ios-download-outline" size={40} color="#5F5E5E" />
 
     var disabled = false;
-    var loading = this.state.status ?
+    var loading = (this.state.status && this.props.prevScene !== 'ExplorePage') ?
     <ModalView
     prevScene={this.props.prevScene}
     tags={this.state.tags}
@@ -346,9 +343,13 @@ export default class Memory extends React.Component {
             <Ionicons name="ios-arrow-back" size={32} style={{color: '#25a2c3', marginTop: 5}}/>
           </Button>
           <Title style={styles.headerText}>{this.state.date}</Title>
-          <Button transparent onPress={this._navigate.bind(this)}>
-            <Ionicons name="ios-home" size={35} color="#444" />
-          </Button>
+          {
+            this.props.prevScene !== 'ExplorePage' ?
+            <Button transparent onPress={this._navigate.bind(this)}>
+              <Ionicons name="ios-home" size={35} color="#444" />
+            </Button>
+            :null
+          }
         </Header>
         <Content>
 
@@ -364,8 +365,12 @@ export default class Memory extends React.Component {
 
             {loading}
 
-            <Ionicons style={styles.iconButton} onPress={this.deleteAlert.bind(this)}
+            {
+              this.props.prevScene !== 'ExplorePage' ?
+              <Ionicons style={styles.iconButton} onPress={this.deleteAlert.bind(this)}
               name="ios-trash-outline" size={40} color="#5F5E5E" />
+              :null
+            }
           </View>
 
           {showCity}
@@ -516,7 +521,7 @@ const styles = StyleSheet.create({
 
   city: {
     ...Font.style('montserrat'),
-    color: 'black',
+    color: '#25a2c3',
     marginLeft:10,
     fontSize: 18
   }

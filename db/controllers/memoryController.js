@@ -217,11 +217,9 @@ exports.searchMemories = function(req, res) {
 };
 
 exports.searchAllTags = function(req, res){
-  console.log('in search for tags')
   Memory.find({
     tags: req.params.query
   }).then(function(memories) {
-    console.log(memories);
     res.status(200).send(memories)
   }).catch(function(err){
     console.log('err with searching for tags');
