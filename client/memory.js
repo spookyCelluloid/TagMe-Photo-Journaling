@@ -8,7 +8,8 @@ import {
   CameraRoll,
   TouchableOpacity,
   Dimensions,
-  AlertIOS
+  AlertIOS,
+  Linking
 } from 'react-native';
 import { Font } from 'exponent';
 import ModalView from './tagsModal';
@@ -280,6 +281,22 @@ export default class Memory extends React.Component {
     )
   }
 
+  openMapAlert() {
+    AlertIOS.alert(
+      'Open Map',
+      'You want to see where this photo is taken?',
+      [
+        {text: 'Yes', onPress: () => this.openMap()},
+        {text: 'No'}
+      ]
+    )
+  }
+
+  openMap() {
+    var geoLocation = 'http://maps.apple.com/?sll=' + this.state.latitude + ',' + this.state.longitude;
+    Linking.openURL(geoLocation);
+  }
+
 
   render() {
 
@@ -298,7 +315,11 @@ export default class Memory extends React.Component {
     };
 
     var showCity = this.state.visible ?
-      <Text style={styles.city}> {`${this.state.city}, ${this.state.state}`} </Text>
+      <Text
+        onLongPress={() => this.openMapAlert()}
+        style={styles.city}>
+        <Ionicons name="ios-pin-outline" size={20} color="#4A4A4A" /> {`${this.state.city}, ${this.state.state}`}
+      </Text>
       : null;
 
     var saving = this.state.savePhoto ?
