@@ -254,7 +254,7 @@ exports.updateCaption = function(req, res) {
         if(err) {
           res.send(err);
         }
-        console.log('*****************', updatedMemory.analyses);
+        console.log('*****************', updatedMemory.analyses[2]);
         res.send(updatedMemory);
       })
     })
