@@ -243,6 +243,8 @@ exports.deleteOne = function(req, res) {
 };
 
 exports.updateCaption = function(req, res) {
+  console.log('body', req.body);
+  console.log('caption', req.body.caption)
   Memory.findOne({_id: req.body.id})
     .then(function(memory) {
       if(err) {

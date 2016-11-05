@@ -291,7 +291,7 @@ export default class Memory extends Component {
     )
   }
 
-  editCaption() {
+  async editCaption() {
     console.log('editCaption invoked');
     console.log('this.state.caption = ', this.state.caption);
     AlertIOS.prompt(
@@ -318,7 +318,7 @@ export default class Memory extends Component {
         caption: this.state.caption
       })
     }).then(function(res) {
-      console.log('successful put request');
+      console.log('successful put request', this.state.caption);
     }).catch(function(err) {
       console.log('error with fetch PUT request', err);
     });
