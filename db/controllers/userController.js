@@ -43,7 +43,10 @@ exports.signup = function(req, res) {
     .then(function(user) {
       if (!user) {
         bcrypt.hash(password, null, null, function(err, hash) {
-
+          if (err) {
+            console.log(err);
+            res.end();
+          }
           User.create({
             username: username,
             password: hash
