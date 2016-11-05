@@ -1,4 +1,4 @@
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
@@ -18,12 +18,11 @@ import { Ionicons } from '@exponent/vector-icons';
 import { Geocoder } from 'react-native-geocoder';
 import Share, {ShareSheet} from 'react-native-share';
 
-var STORAGE_KEY = 'id_token';
+const STORAGE_KEY = 'id_token';
 
-export default class Memory extends React.Component {
+export default class Memory extends Component {
   constructor(props) {
     super(props);
-
 
     this.state = {
       image: this.props.image,
@@ -104,17 +103,17 @@ export default class Memory extends React.Component {
       method: 'POST',
       headers: {
         'Content-Type': 'multipart/form-data',
-        'Authorization': 'Bearer ' + token
+        'Authorization': `Bearer ${token}`
       }
     }).then(function(res) {
       var databaseId = JSON.parse(res['_bodyInit']);
-      fetch('https://spooky-tagme.herokuapp.com/api/memories/location/' + databaseId,
+      fetch(`https://spooky-tagme.herokuapp.com/api/memories/location/${databaseId}`,
       {
         body: JSON.stringify(location),
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
+          'Authorization': `Bearer ${token}`
         }
       });
       context.getMemoryData(databaseId, 0);
@@ -122,7 +121,7 @@ export default class Memory extends React.Component {
   }
 
   async getMemoryData(id, pings) {
-    var context = this;
+    const context = this;
     try {
       var token =  await AsyncStorage.getItem(STORAGE_KEY);
     } catch (error) {
@@ -130,10 +129,10 @@ export default class Memory extends React.Component {
     }
 
 
-    await fetch('https://spooky-tagme.herokuapp.com/api/memories/id/' + id, {
+    await fetch(`https://spooky-tagme.herokuapp.com/api/memories/id/${id}`, {
       method: 'GET',
       headers: {
-        'Authorization': 'Bearer ' + token
+        'Authorization': `Bearer ${token}`
       }
     }).then(function(res) {
       var memory = JSON.parse(res['_bodyInit']);
@@ -164,7 +163,7 @@ export default class Memory extends React.Component {
         longitude: memory.longitude,
         latitude: memory.latitude
       });
-    }).catch(function(err) {
+    }).catch((err) => {
       console.log('ERROR', err);
       // Try pinging database again
       if (pings < 200) {
@@ -205,7 +204,7 @@ export default class Memory extends React.Component {
       console.log('AsyncStorage error: ' + error.message);
     }
 
-    fetch('https://spooky-tagme.herokuapp.com/api/memories/id/' + this.state.databaseId, {
+    fetch(`https://spooky-tagme.herokuapp.com/api/memories/id/${this.state.databaseId}`, {
       method: 'POST',
       headers: {
         'Authorization': 'Bearer ' + token,
@@ -214,14 +213,14 @@ export default class Memory extends React.Component {
       body: JSON.stringify({
         tags: this.state.filteredTags
       })
-    }).catch(function(err) {
-
+    }).catch((err) => {
+      console.log(err);
     })
   }
 
   async getCityName() {
-    var context = this;
-    var myKey = 'AIzaSyBsY6oEKTUuYyJos6jKuvTUT3aDlYKWbts'
+    const context = this;
+    const myKey = 'AIzaSyBsY6oEKTUuYyJos6jKuvTUT3aDlYKWbts'
     var location = {
       lat: this.state.latitude,
       lng: this.state.longitude
@@ -229,10 +228,10 @@ export default class Memory extends React.Component {
 
    await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.lat},${location.lng}&key=${myKey}`, {
     method: 'GET'
-   }).then(function(res){
+   }).then((res) => {
     var result = JSON.parse(res['_bodyInit'])
     context.setState({city: result.results[0].address_components[3].long_name, state: result.results[0].address_components[5].short_name, visible: true})
-   }).catch(function(err){
+   }).catch((err) => {
     console.log('error with gelocation fetch')
    })
 
@@ -249,23 +248,19 @@ export default class Memory extends React.Component {
       console.log('AsyncStorage error: ' + error.message);
     }
 
-    console.log('this.state.databaseId', this.state.databaseId);
-    var endpoint = 'https://spooky-tagme.herokuapp.com/api/memories/delete/' + this.state.databaseId;
-    console.log('endpoint', endpoint);
-
-    await fetch('https://spooky-tagme.herokuapp.com/api/memories/delete/' + this.state.databaseId, {
+    await fetch(`https://spooky-tagme.herokuapp.com/api/memories/delete/${this.state.databaseId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token
+        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({
         id: this.state.databaseId,
         user: this.props.username
       })
     }).then(function(res) {
-      console.log(res)
-     context._navigateMemories()
+
+      context._navigateMemories();
     }).catch(function(err) {
       console.log('error with fetch POST request', err);
     });
@@ -294,7 +289,7 @@ export default class Memory extends React.Component {
   }
 
   openMap() {
-    var geoLocation = 'http://maps.apple.com/?daddr=' + this.state.latitude + ',' + this.state.longitude;
+    var geoLocation = `http://maps.apple.com/?daddr=${this.state.latitude},${this.state.longitude}`;
     Linking.openURL(geoLocation);
   }
 
