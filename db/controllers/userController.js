@@ -42,7 +42,7 @@ exports.signup = function(req, res) {
   User.findOne({username: req.body.username})
     .then(function(user) {
       if (!user) {
-        bcrypt.hash(password, null, null, function(err, hash) {
+        bcrypt.hash(password, null, function(err, hash) {
           if (err) {
             console.log(err);
             res.end();
