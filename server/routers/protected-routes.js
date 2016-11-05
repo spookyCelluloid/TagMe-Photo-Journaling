@@ -48,4 +48,7 @@ router.route('/delete/:id').post(jsonParser, memoryController.deleteOne);
 //searches for all memories with a given tag
 router.route('/allTagMemories/:query').get(memoryController.searchAllTags);
 
+// update a photo's caption
+router.route('/update:caption').put(memoryController.updateCaption);
+
 module.exports = router;
