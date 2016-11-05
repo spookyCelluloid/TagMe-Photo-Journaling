@@ -25,11 +25,23 @@ export default class Login extends Component {
   }
 
   async componentDidMount() {
-    await Font.loadAsync({
-      'pacifico': require('./assets/fonts/Pacifico.ttf'),
-      'montserrat': require('./assets/fonts/Montserrat-Regular.ttf')
-    });
-    this.setState({ fontLoaded: true });
+    try {
+      var token =  await AsyncStorage.getItem(STORAGE_KEY);
+    } catch (error) {
+      console.log('AsyncStorage error: ' + error.message);
+    }
+
+    if (!!token) {
+      var username = await AsyncStorage.getItem('username');
+      console.log('there is a token with username: ', username);
+      this._navigate(username);
+    } else {
+      await Font.loadAsync({
+        'pacifico': require('./assets/fonts/Pacifico.ttf'),
+        'montserrat': require('./assets/fonts/Montserrat-Regular.ttf')
+      });
+      this.setState({ fontLoaded: true });
+    }
   }
 
   _navigate(username) {
@@ -39,9 +51,10 @@ export default class Login extends Component {
     })
   }
 
-  async _onValueChange(item, selectedValue) {
+  async _onValueChange(item, selectedValue, username) {
     try {
       await AsyncStorage.setItem(item, selectedValue);
+      await AsyncStorage.setItem('username', username)
       console.log('token saved!');
     } catch (error) {
       console.log('AsyncStorage error: ' + error.message);
@@ -67,7 +80,8 @@ export default class Login extends Component {
         context.clearInput();
         if (response.status === 201) {
           var token = JSON.parse(response._bodyText).id_token;
-          return context._onValueChange(STORAGE_KEY, token)
+          var username = JSON.parse(response._bodyText).username;
+          return context._onValueChange(STORAGE_KEY, token, username)
             .then(function() {
               context._navigate(username);
             });
@@ -99,7 +113,8 @@ export default class Login extends Component {
         context.clearInput();
         if (response.status === 201) {
           var token = JSON.parse(response._bodyText).id_token;
-          return context._onValueChange(STORAGE_KEY, token)
+          var username = JSON.parse(response._bodyText).username;
+          return context._onValueChange(STORAGE_KEY, token, username)
             .then(function() {
               context._navigate(username);
             });

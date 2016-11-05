@@ -226,15 +226,23 @@ export default class Memory extends Component {
       lat: this.state.latitude,
       lng: this.state.longitude
     };
+    console.log(location);
 
    await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.lat},${location.lng}&key=${myKey}`, {
     method: 'GET'
    }).then((res) => {
     var result = JSON.parse(res['_bodyInit'])
-    context.setState({city: result.results[0].address_components[3].long_name, state: result.results[0].address_components[5].short_name, visible: true})
-   }).catch((err) => {
-    console.log('error with gelocation fetch')
+    context.setState({
+      city: result.results[0].address_components[3].long_name,
+      state: result.results[0].address_components[5].short_name,
+      visible: true})
+   }).then(function() {
+    console.log(context.state);
    })
+
+   /*.catch((err) => {
+    console.log('error with gelocation fetch');
+   })*/
 
 
   }
