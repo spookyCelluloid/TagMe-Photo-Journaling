@@ -249,6 +249,7 @@ exports.updateCaption = function(req, res) {
     .then(function(memory) {
       console.log(memory);
       memory.analyses[2].tags[0] = req.body.caption;
+      console.log('*****************', memory.analyses[2].tags[0])
       memory.save(function(err, updatedMemory) {
         if(err) {
           res.send(err);
