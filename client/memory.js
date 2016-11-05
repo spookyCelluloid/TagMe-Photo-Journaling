@@ -300,25 +300,31 @@ export default class Memory extends Component {
       text => this.setState({caption: text}) 
     )
 
-      await fetch(`https://spooky-tagme.herokuapp.com/api/memories/update:caption/${this.state.databaseId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          id: this.state.databaseId,
-          user: this.props.username,
-          caption: this.state.caption
-        })
-      }).then(function(res) {
-        console.log('successful put request');
-      }).catch(function(err) {
-        console.log('error with fetch PUT request', err);
-      });
+    try {
+      var token =  await AsyncStorage.getItem(STORAGE_KEY);
+    } catch (error) {
+      console.log('AsyncStorage error: ' + error.message);
     }
 
+    await fetch(`https://spooky-tagme.herokuapp.com/api/memories/update:caption/${this.state.databaseId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        id: this.state.databaseId,
+        user: this.props.username,
+        caption: this.state.caption
+      })
+    }).then(function(res) {
+      console.log('successful put request');
+    }).catch(function(err) {
+      console.log('error with fetch PUT request', err);
+    });
+
   }
+
 
   openMap() {
     var geoLocation = `http://maps.apple.com/?daddr=${this.state.latitude},${this.state.longitude}`;
@@ -556,10 +562,3 @@ const styles = StyleSheet.create({
   }
 });
 
-
-
-
-      // <TextInput 
-      //   onChangeText={(text) => this.setState({caption: text})}
-      //   value={this.state.caption}
-      // />
