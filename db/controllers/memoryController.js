@@ -247,7 +247,8 @@ exports.updateCaption = function(req, res) {
   console.log('caption', req.body.caption)
   Memory.findOne({_id: req.body.id})
     .then(function(memory) {
-      memory.analyses.tags[0] = req.body.caption;
+      console.log(memory);
+      memory.analyses[2].tags[0] = req.body.caption;
       res.sendStatus(201);
     })
     .catch(function(err) {
