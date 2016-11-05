@@ -23,7 +23,7 @@ exports.login = function(req, res) {
         bcrypt.compare(req.body.password, user.password, function(err, match) {
           if (match) {
             res.status(201).send({
-              'id_token': createToken(user)
+              'id_token': createToken(user),
               'username': user.username
             });
           } else {
