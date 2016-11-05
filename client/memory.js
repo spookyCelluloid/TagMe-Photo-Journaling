@@ -38,7 +38,8 @@ export default class Memory extends Component {
       latitude: this.props.latitude,
       city: null,
       state: null,
-      visible: false
+      visible: false,
+      captionUpdateComplete: false
     };
   }
 
@@ -299,15 +300,9 @@ export default class Memory extends Component {
     )
   }
 
-  async editCaption() {
-    console.log('editCaption invoked');
-    console.log('this.state.caption = ', this.state.caption);
-    AlertIOS.prompt(
-      'Edit caption',
-      null,
-      text => this.setState({caption: text}) 
-    )
 
+  async updateRequest(caption) {
+    console.log('caption = ', caption);
     try {
       var token =  await AsyncStorage.getItem(STORAGE_KEY);
     } catch (error) {
@@ -323,16 +318,27 @@ export default class Memory extends Component {
       body: JSON.stringify({
         id: this.state.databaseId,
         user: this.props.username,
-        caption: this.state.caption
+        caption: caption
       })
     }).then(function(res) {
-      console.log('successful put request', this.state.caption);
+      console.log('successful put request', caption);
     }).catch(function(err) {
       console.log('error with fetch PUT request', err);
     });
-
   }
 
+  editCaption() {
+    console.log('editCaption invoked');
+    console.log('this.state.caption = ', this.state.caption);
+    AlertIOS.prompt(
+      'Edit caption',
+      null,
+      [
+        {text: 'Cancel'},
+        {text: 'Ok', onPress: this.updateRequest.bind(this)}
+      ]
+    )
+  }
 
   openMap() {
     var geoLocation = `http://maps.apple.com/?daddr=${this.state.latitude},${this.state.longitude}`;
