@@ -49,6 +49,6 @@ router.route('/delete/:id').post(jsonParser, memoryController.deleteOne);
 router.route('/allTagMemories/:query').get(memoryController.searchAllTags);
 
 // update a photo's caption
-router.route('/update/:caption').put(memoryController.updateCaption);
+router.route('/update/:id').put(memoryController.updateCaption);
 
 module.exports = router;
