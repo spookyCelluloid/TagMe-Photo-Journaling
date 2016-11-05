@@ -9,7 +9,9 @@ import {
   TouchableOpacity,
   Dimensions,
   AlertIOS,
-  Linking
+  Linking,
+  TextInput,
+  Input
 } from 'react-native';
 import { Font } from 'exponent';
 import ModalView from './tagsModal';
@@ -77,6 +79,7 @@ export default class Memory extends Component {
   }
 
   async uploadPhoto() {
+    console.log(this.state.image.uri);
     var context = this;
     var photo = {
       uri: this.state.image.uri,
@@ -225,15 +228,23 @@ export default class Memory extends Component {
       lat: this.state.latitude,
       lng: this.state.longitude
     };
+    console.log(location);
 
    await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.lat},${location.lng}&key=${myKey}`, {
     method: 'GET'
    }).then((res) => {
     var result = JSON.parse(res['_bodyInit'])
-    context.setState({city: result.results[0].address_components[3].long_name, state: result.results[0].address_components[5].short_name, visible: true})
-   }).catch((err) => {
-    console.log('error with gelocation fetch')
+    context.setState({
+      city: result.results[0].address_components[3].long_name,
+      state: result.results[0].address_components[5].short_name,
+      visible: true})
+   }).then(function() {
+    console.log(context.state);
    })
+
+   /*.catch((err) => {
+    console.log('error with gelocation fetch');
+   })*/
 
 
   }
@@ -287,6 +298,41 @@ export default class Memory extends Component {
       ]
     )
   }
+
+  async editCaption() {
+    console.log('editCaption invoked');
+    console.log('this.state.caption = ', this.state.caption);
+    AlertIOS.prompt(
+      'Edit caption',
+      null,
+      text => this.setState({caption: text}) 
+    )
+
+    try {
+      var token =  await AsyncStorage.getItem(STORAGE_KEY);
+    } catch (error) {
+      console.log('AsyncStorage error: ' + error.message);
+    }
+
+    await fetch(`https://spooky-tagme.herokuapp.com/api/memories/update/${this.state.databaseId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        id: this.state.databaseId,
+        user: this.props.username,
+        caption: this.state.caption
+      })
+    }).then(function(res) {
+      console.log('successful put request', this.state.caption);
+    }).catch(function(err) {
+      console.log('error with fetch PUT request', err);
+    });
+
+  }
+
 
   openMap() {
     var geoLocation = `http://maps.apple.com/?daddr=${this.state.latitude},${this.state.longitude}`;
@@ -370,6 +416,8 @@ export default class Memory extends Component {
 
           {showCity}
           <Text style={styles.caption}>{this.state.caption}</Text>
+          <Ionicons style={styles.iconButton} onPress={this.editCaption.bind(this)}
+          name="ios-create-outline" size={40} color="#5F5E5E" />
           <MemoryDetails
             navigator={this.props.navigator}
             status={this.state.status}
@@ -521,3 +569,4 @@ const styles = StyleSheet.create({
     fontSize: 18
   }
 });
+
