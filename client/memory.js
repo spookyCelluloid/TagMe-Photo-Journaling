@@ -79,6 +79,7 @@ export default class Memory extends Component {
   }
 
   async uploadPhoto() {
+    console.log(this.state.image.uri);
     var context = this;
     var photo = {
       uri: this.state.image.uri,
