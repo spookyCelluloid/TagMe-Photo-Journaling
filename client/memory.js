@@ -422,8 +422,6 @@ export default class Memory extends Component {
 
           {showCity}
           <Text style={styles.caption}>{this.state.caption}</Text>
-          <Ionicons style={styles.iconButton} onPress={this.editCaption.bind(this)}
-          name="ios-create-outline" size={40} color="#5F5E5E" />
           <MemoryDetails
             navigator={this.props.navigator}
             status={this.state.status}
