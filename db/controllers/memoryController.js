@@ -241,3 +241,20 @@ exports.deleteOne = function(req, res) {
     });
 
 };
+
+exports.updateCaption = function(req, res) {
+  Memory.findOne({_id: req.body.id})
+    .then(function(memory) {
+      if(err) {
+        res.send(err);
+      }
+      memory.analyses.tags[0] = req.body.caption;
+      res.sendStatus(201);
+    })
+    .catch(function(err) {
+      console.log(err);
+    })
+
+}
+
+

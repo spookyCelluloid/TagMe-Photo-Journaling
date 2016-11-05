@@ -9,7 +9,9 @@ import {
   TouchableOpacity,
   Dimensions,
   AlertIOS,
-  Linking
+  Linking,
+  TextInput,
+  Input
 } from 'react-native';
 import { Font } from 'exponent';
 import ModalView from './tagsModal';
@@ -288,6 +290,35 @@ export default class Memory extends Component {
     )
   }
 
+  editCaption() {
+    console.log('editCaption invoked');
+    console.log('this.state.caption = ', this.state.caption);
+    AlertIOS.prompt(
+      'Edit caption',
+      null,
+      text => this.setState({caption: text}) 
+    )
+
+      await fetch(`https://spooky-tagme.herokuapp.com/api/memories/update:caption/${this.state.databaseId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          id: this.state.databaseId,
+          user: this.props.username,
+          caption: this.state.caption
+        })
+      }).then(function(res) {
+        console.log('successful put request');
+      }).catch(function(err) {
+        console.log('error with fetch PUT request', err);
+      });
+    }
+
+  }
+
   openMap() {
     var geoLocation = `http://maps.apple.com/?daddr=${this.state.latitude},${this.state.longitude}`;
     Linking.openURL(geoLocation);
@@ -370,6 +401,8 @@ export default class Memory extends Component {
 
           {showCity}
           <Text style={styles.caption}>{this.state.caption}</Text>
+          <Ionicons style={styles.iconButton} onPress={this.editCaption.bind(this)}
+          name="ios-create-outline" size={40} color="#5F5E5E" />
           <MemoryDetails
             navigator={this.props.navigator}
             status={this.state.status}
@@ -521,3 +554,11 @@ const styles = StyleSheet.create({
     fontSize: 18
   }
 });
+
+
+
+
+      // <TextInput 
+      //   onChangeText={(text) => this.setState({caption: text})}
+      //   value={this.state.caption}
+      // />
