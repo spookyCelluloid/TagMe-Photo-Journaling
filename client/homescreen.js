@@ -1,4 +1,4 @@
-import Exponent from 'exponent';
+import Exponent, { Font } from 'exponent';
 import React from 'react';
 import {
   StyleSheet,
@@ -10,7 +10,6 @@ import {
   StatusBar,
   Dimensions
 } from 'react-native';
-import { Font } from 'exponent';
 import { Container, Header, Title, Content, Footer, Button } from 'native-base';
 import { Ionicons } from '@exponent/vector-icons';
 
@@ -26,6 +25,7 @@ export default class Homescreen extends React.Component {
   }
 
   async componentDidMount() {
+    console.log('there is the homescreen');
     await Font.loadAsync({
       'pacifico': require('./assets/fonts/Pacifico.ttf'),
       'montserrat': require('./assets/fonts/Montserrat-Regular.ttf')
@@ -36,6 +36,7 @@ export default class Homescreen extends React.Component {
   async _userLogout() {
     try {
       await AsyncStorage.removeItem(STORAGE_KEY);
+      await AsyncStorage.removeItem('username');
       AlertIOS.alert("Logout Success!")
     } catch (error) {
       console.log('AsyncStorage error: ' + error.message);
@@ -104,7 +105,7 @@ export default class Homescreen extends React.Component {
         );
 
       }
- 
+
     });
   }
 
@@ -119,8 +120,7 @@ export default class Homescreen extends React.Component {
           <Image source={require('./assets/images/city.jpg')} style={styles.backgroundImage} />
         </View>
         <Header style={{height: 80, zIndex: 1}}>
-          <Button transparent><Text style={styles.buttonText}> </Text></Button>
-          <Title style={styles.headerText}>TagMe</Title>
+          {this.state.fontLoaded ? <Title style={styles.headerText}>TagMe</Title>:null}
           <Button transparent onPress={this.logout.bind(this)}>
             <Image source={require('./assets/images/logoutTextIcon.png')} style={styles.logoutTextIcon} resizeMode={Image.resizeMode.contain}/>
             </Button>
@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
   },
 
   logoutTextIcon: {
-    marginLeft: Dimensions.get('window').width - 255.7328572394857923489,
+    marginLeft: Dimensions.get('window').width - 220,
     height: 30,
     justifyContent: 'center',
     alignItems: 'center'
