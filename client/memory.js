@@ -306,7 +306,7 @@ export default class Memory extends Component {
       console.log('AsyncStorage error: ' + error.message);
     }
 
-    await fetch(`https://spooky-tagme.herokuapp.com/api/memories/update:caption/${this.state.databaseId}`, {
+    await fetch(`https://spooky-tagme.herokuapp.com/api/memories/update/${this.state.databaseId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
