@@ -1,5 +1,6 @@
 var User = require('../models/userModel');
 var bcrypt = require('bcrypt');
+
 var jwt = require('jsonwebtoken');
 var _ = require('lodash');
 
