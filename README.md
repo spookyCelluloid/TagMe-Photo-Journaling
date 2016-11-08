@@ -1,17 +1,15 @@
-# Project Name
-TagMe
-
+# TagMe
 Photo and video journaling with automated tagging
 
 ## Team
 
-  - __Product Owner__: Bobby Wei
-  - __Scrum Master__: Bobby Wei
-  - __Development Team Members__: Kyle Chun, Karina Kinaman, Bill Zito, Bobby Wei
+  - __Product Owner__: Miles Smith
+  - __Scrum Master__: Tim Zeng
+  - __Development Team Members__: Robin Kuehn, Jesse Mavi
 
 ## Table of Contents
 
-1. [Usage](#Usage)
+
 1. [Requirements](#requirements)
 1. [Development](#development)
     1. [Installing Dependencies](#installing-dependencies)
@@ -19,8 +17,6 @@ Photo and video journaling with automated tagging
 1. [Team](#team)
 1. [Contributing](#contributing)
 
-## Usage
- 
 
 ## Requirements
 
